@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интерактивная база знаний</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Скрываем контент по умолчанию */
+        .content-section {
+            display: none;
+        }
+        /* Показываем активную секцию */
+        .content-section.active {
+            display: block;
+        }
+        /* Стиль для активной кнопки в меню */
+        .nav-link.active {
+            background-color: #3b82f6; /* blue-600 */
+            color: white;
+        }
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+        }
+        /* Стили для аккордеона материалов */
+        .material-accordion details > summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+        .material-accordion details > summary:hover {
+            background-color: #e5e7eb;
+        }
+        .material-accordion details[open] > summary {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+        }
+        .material-accordion details .content {
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-top: none;
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Окно для ввода пароля -->
+    <div id="password-modal" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-sm text-center">
+            <h2 class="text-2xl font-bold mb-4">Требуется доступ</h2>
+            <p class="text-gray-600 mb-6">Пожалуйста, введите пароль для входа.</p>
+            <form id="password-form">
+                <input type="password" id="password-input" class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Пароль">
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">Войти</button>
+            </form>
+            <p id="error-message" class="text-red-500 mt-4 h-4"></p>
+        </div>
+    </div>
+
+    <!-- Основной контент, скрытый по умолчанию -->
+    <div id="main-content" class="hidden">
+        <div class="container mx-auto p-4 md:p-8">
+            <header class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900">База знаний</h1>
+                <p class="text-md text-gray-600 mt-2">Вся информация по оборудованию, материалам и ПО</p>
+            </header>
+
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Боковая навигация -->
+                <nav id="navigation" class="w-full md:w-1/4 bg-white p-6 rounded-lg shadow-md self-start">
+                    <h2 class="font-bold text-xl mb-4 border-b pb-2">Разделы</h2>
+                    <ul class="space-y-2">
+                        <li><a href="#stanki" class="nav-link block w-full text-left p-3 rounded-lg hover:bg-gray-200 transition-colors duration-200">1. Станки</a></li>
+                        <li><a href="#materialy" class="nav-link block w-full text-left p-3 rounded-lg hover:bg-gray-200 transition-colors duration-200">2. Материалы</a></li>
+                        <li><a href="#hyperdent" class="nav-link block w-full text-left p-3 rounded-lg hover:bg-gray-200 transition-colors duration-200">3. Программа Hyperdent</a></li>
+                        <li><a href="#millbox" class="nav-link block w-full text-left p-3 rounded-lg hover:bg-gray-200 transition-colors duration-200">4. Программа Millbox</a></li>
+                        <li><a href="#pechi" class="nav-link block w-full text-left p-3 rounded-lg hover:bg-gray-200 transition-colors duration-200">5. Печи</a></li>
+                        <li><hr class="my-2"></li>
+                        <li><div data-src-id="1l7PhdVmifHj-_z52jzLA9aRF4oBxVaMM" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-green-700 hover:bg-green-100 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                            </svg>
+                            Каталог продукции
+                        </div></li>
+                    </ul>
+                </nav>
+
+                <!-- Основной контент -->
+                <main class="w-full md:w-3/4 bg-white p-8 rounded-lg shadow-md">
+                    <!-- Секция по умолчанию -->
+                    <section id="welcome" class="content-section active">
+                        <h2 class="text-2xl font-bold mb-4">Добро пожаловать!</h2>
+                        <p>Выберите раздел в меню слева, чтобы просмотреть информацию.</p>
+                        <div class="mt-6 p-4 bg-blue-50 border-l-4 border-blue-500 text-blue-800 rounded-r-lg">
+                            <p class="font-semibold">Как это работает?</p>
+                            <p class="mt-2">Эта база знаний — ваш интерактивный помощник. Выберите раздел в меню, чтобы найти нужную информацию. Мы постоянно дополняем её, чтобы вы могли получить квалифицированную помощь без лишней головной боли и ознакомиться с решением ещё до столкновения с проблемой.</p>
+                        </div>
+                    </section>
+
+                    <!-- Секция "Станки" -->
+                    <section id="stanki" class="content-section">
+                        <h2 class="text-2xl font-bold mb-6 border-b pb-3">1. Станки</h2>
+                        <p class="text-gray-600 mb-6">Нажмите на изображение станка, чтобы развернуть список инструкций.</p>
+                        <div class="flex flex-col md:flex-row gap-8 justify-center">
+
+                            <!-- Карточка A52 -->
+                            <div class="interactive-card w-full md:w-1/2">
+                                <figure class="cursor-pointer bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                                    <img src="https://lh3.googleusercontent.com/d/1gtgACelrW4SzHjbKRMEo2-wd71g070vg" alt="Станок A52" class="w-full h-auto object-contain rounded-md mx-auto" style="max-height: 300px;">
+                                    <figcaption class="text-center font-bold text-lg mt-4">Серия А52</figcaption>
+                                </figure>
+                                <div class="collapsible-content mt-2">
+                                    <div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
+                                        <div class="launch-checklist-btn cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors" data-machine="a52">Запуск</div>
+                                        <div data-src-id="1nM0ibR6NRNVfrdVo63LlBMIbmcqgggof" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">Использование Штангенциркуля</div>
+                                        <div data-src-type="youtube" data-src-id="mUQ06kAM12o?t=85" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">Разведение СОЖ</div>
+                                        <div data-src-type="youtube" data-src-id="NeUaZUK2GMY" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">Обслуживание/Калибровка</div>
+                                        
+                                        <details class="group">
+                                            <summary class="list-none p-2 rounded-md font-semibold text-gray-800 bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer">Документы</summary>
+                                            <div class="p-3 mt-1 text-sm border border-gray-200 rounded-b-md bg-white space-y-2">
+                                                 <div data-src-id="1e3ST2I5WzuOqbZ_mEnT4JrCyvFWkYm0c" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">Памятка</div>
+                                            </div>
+                                        </details>
+
+                                        <details class="group">
+                                            <summary class="list-none p-2 rounded-md font-semibold text-red-800 bg-red-100 hover:bg-red-200 transition-colors cursor-pointer">Ошибки</summary>
+                                            <div class="p-3 mt-1 text-sm border border-red-200 rounded-b-md bg-white space-y-2">
+                                                <div data-src-id="1644UY76y0anYCZ5vE92bm6R_ODxB3l33" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">1. Замена и сброс фрезы</div>
+                                                <div data-src-id="1QwmBMhdC5ingw8BxyvCYXRggzcJCOsee" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">2. Установка Фрезы без упорного кольца</div>
+                                                <div data-src-id="1yEFI9A3kNXwwVRjO_53QNxTEtxnKp21o" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">3. Включение "времени жизни фрезы"</div>
+                                                <div data-src-id="14G4jXnqH1RyaC6AysY3t13ZaK8r2PM1Y" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">4. No Disk Space</div>
+                                            </div>
+                                        </details>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Карточка B52 -->
+                            <div class="interactive-card w-full md:w-1/2">
+                                <figure class="cursor-pointer bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                                    <img src="https://lh3.googleusercontent.com/d/1Zq33ZIgbwQXnYur3hliQFNvubU7fttPw" alt="Станок B52" class="w-full h-auto object-contain rounded-md mx-auto" style="max-height: 300px;">
+                                    <figcaption class="text-center font-bold text-lg mt-4">Серия B52</figcaption>
+                                </figure>
+                                 <div class="collapsible-content mt-2">
+                                    <div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
+                                        <div class="launch-checklist-btn cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors" data-machine="b52">Запуск</div>
+                                        <div data-src-id="1nM0ibR6NRNVfrdVo63LlBMIbmcqgggof" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">Использование Штангенциркуля</div>
+                                        <div class="p-2 text-gray-400">Разведение СОЖ (видео в процессе)</div>
+                                        <div data-src-id="12qqR-ipVL1Xg6wyCe9_kZC89BnOMFDGj" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">Обслуживание/Калибровка</div>
+
+                                        <details class="group">
+                                            <summary class="list-none p-2 rounded-md font-semibold text-gray-800 bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer">Документы</summary>
+                                            <div class="p-3 mt-1 text-sm border border-gray-200 rounded-b-md bg-white space-y-2">
+                                                 <div data-src-id="101SWMXBhv-hS2AVRH_pqVvT4aQZR9ZFk" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">Инструкция оператора</div>
+                                            </div>
+                                        </details>
+                                        
+                                        <details class="group">
+                                            <summary class="list-none p-2 rounded-md font-semibold text-red-800 bg-red-100 hover:bg-red-200 transition-colors cursor-pointer">Ошибки</summary>
+                                            <div class="p-3 mt-1 text-sm border border-red-200 rounded-b-md bg-white space-y-2">
+                                                <div data-src-id="1644UY76y0anYCZ5vE92bm6R_ODxB3l33" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">1. Замена и сброс фрезы</div>
+                                                <div data-src-id="1yEFI9A3kNXwwVRjO_53QNxTEtxnKp21o" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">2. Включение "времени жизни фрезы"</div>
+                                                <div data-src-id="14G4jXnqH1RyaC6AysY3t13ZaK8r2PM1Y" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">3. No Disk Space</div>
+                                            </div>
+                                        </details>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <!-- Секция "Материалы" -->
+                    <section id="materialy" class="content-section">
+                        <h2 class="text-2xl font-bold mb-6 border-b pb-3">2. Материалы</h2>
+                         <div class="space-y-8 material-accordion">
+                            <!-- Циркон -->
+                            <div>
+                                <h3 class="text-xl font-semibold mb-3">2.1. Циркон</h3>
+                                <div class="space-y-2">
+                                    <details>
+                                        <summary>DUO</summary>
+                                        <div class="content space-y-3">
+                                            <h4 class="font-semibold">Свойства:</h4>
+                                            <ul class="list-disc list-inside bg-gray-50 p-3 rounded">
+                                                <li><strong>Прозрачность:</strong> 45% - 48%</li>
+                                                <li><strong>Прочность на изгиб:</strong> 850 - 1200 МПа</li>
+                                                <li><strong>Плотность после спекания:</strong> ≥6.0 г/см³</li>
+                                                <li><strong>КТР (25-500°C):</strong> (10.5±0.5)×10<sup>-6</sup> K<sup>-1</sup></li>
+                                                <li><strong>Температура спекания:</strong> 1480°C</li>
+                                            </ul>
+                                            <h4 class="font-semibold">Программа синтеризации (Стандартная, до 7 ед.):</h4>
+                                            <ol class="list-decimal list-inside space-y-1">
+                                                <li><b>Шаг 1:</b> Нагрев до 1000°C со скоростью 17°C/мин.</li>
+                                                <li><b>Шаг 2:</b> Нагрев до 1300°C со скоростью 10°C/мин.</li>
+                                                <li><b>Шаг 3:</b> Нагрев до 1515°C со скоростью 7°C/мин.</li>
+                                                <li><b>Шаг 4:</b> Выдержка при 1515°C в течение 90 минут.</li>
+                                                <li><b>Шаг 5:</b> Остывание до 800°C со скоростью 8°C/мин.</li>
+                                                <li><b>Шаг 6:</b> Естественное остывание.</li>
+                                            </ol>
+                                            <h4 class="font-semibold">Программа синтеризации (Для протяженных мостов, >7 ед.):</h4>
+                                             <ol class="list-decimal list-inside space-y-1">
+                                                <li><b>Шаг 1:</b> Нагрев до 1300°C со скоростью 4°C/мин.</li>
+                                                <li><b>Шаг 2:</b> Нагрев до 1515°C со скоростью 2°C/мин.</li>
+                                                <li><b>Шаг 3:</b> Выдержка при 1515°C в течение 120 минут.</li>
+                                                <li><b>Шаг 4:</b> Остывание до 800°C со скоростью 4°C/мин.</li>
+                                                <li><b>Шаг 5:</b> Естественное остывание.</li>
+                                            </ol>
+                                        </div>
+                                    </details>
+                                    <details>
+                                        <summary>HT White</summary>
+                                        <div class="content space-y-3">
+                                            <h4 class="font-semibold">Свойства:</h4>
+                                             <ul class="list-disc list-inside bg-gray-50 p-3 rounded">
+                                                <li><strong>Прозрачность:</strong> 39%</li>
+                                                <li><strong>Прочность на изгиб:</strong> 1300 МПа</li>
+                                                <li><strong>Температура спекания:</strong> 1530°C</li>
+                                            </ul>
+                                            <h4 class="font-semibold">Программа синтеризации:</h4>
+                                            <ol class="list-decimal list-inside space-y-1">
+                                                <li><b>Шаг 1:</b> Нагрев до 500°C со скоростью 3°C/мин.</li>
+                                                <li><b>Шаг 2:</b> Нагрев до 1150°C со скоростью 8°C/мин.</li>
+                                                <li><b>Шаг 3:</b> Выдержка при 1150°C в течение 30 минут.</li>
+                                                <li><b>Шаг 4:</b> Нагрев до 1300°C со скоростью 2°C/мин.</li>
+                                                <li><b>Шаг 5:</b> Нагрев до 1530°C со скоростью 4°C/мин.</li>
+                                                <li><b>Шаг 6:</b> Выдержка при 1530°C в течение 120 минут.</li>
+                                                <li><b>Шаг 7:</b> Остывание до 800°C со скоростью 8°C/мин, затем естественное остывание.</li>
+                                            </ol>
+                                        </div>
+                                    </details>
+                                    <details>
+                                        <summary>ST Series (White, Pre-shaded, Multilayer)</summary>
+                                        <div class="content space-y-3">
+                                            <h4 class="font-semibold">Свойства:</h4>
+                                             <ul class="list-disc list-inside bg-gray-50 p-3 rounded">
+                                                <li><strong>Прозрачность:</strong> 43%</li>
+                                                <li><strong>Прочность на изгиб:</strong> 1300 МПа</li>
+                                                <li><strong>Температура спекания:</strong> 1530°C</li>
+                                            </ul>
+                                            <h4 class="font-semibold">Программа синтеризации (Стандартная):</h4>
+                                            <p>Аналогично программе для HT White (пиковая температура 1530°C).</p>
+                                            <h4 class="font-semibold">Программа синтеризации (Ускоренная, 4 часа):</h4>
+                                            <ol class="list-decimal list-inside space-y-1">
+                                                <li><b>Шаг 1:</b> Нагрев до 1150°C со скоростью 40°C/мин.</li>
+                                                <li><b>Шаг 2:</b> Выдержка при 1150°C в течение 10 минут.</li>
+                                                <li><b>Шаг 3:</b> Нагрев до 1550°C со скоростью 10°C/мин.</li>
+                                                <li><b>Шаг 4:</b> Выдержка при 1550°C в течение 120 минут.</li>
+                                                <li><b>Шаг 5:</b> Остывание до 800°C со скоростью 40°C/мин.</li>
+                                            </ol>
+                                             <h4 class="font-semibold">Программа синтеризации (Ускоренная, 2 часа):</h4>
+                                            <ol class="list-decimal list-inside space-y-1">
+                                                <li><b>Шаг 1:</b> Нагрев до 1150°C со скоростью 50°C/мин.</li>
+                                                <li><b>Шаг 2:</b> Нагрев до 1550°C со скоростью 8°C/мин.</li>
+                                                <li><b>Шаг 3:</b> Выдержка при 1550°C в течение 30 минут.</li>
+                                                <li><b>Шаг 4:</b> Остывание до 800°C со скоростью 50°C/мин.</li>
+                                            </ol>
+                                        </div>
+                                    </details>
+                                    <details>
+                                        <summary>TT-ONE Series (White, Pre-shaded, Multilayer)</summary>
+                                        <div class="content space-y-3">
+                                            <h4 class="font-semibold">Свойства:</h4>
+                                             <ul class="list-disc list-inside bg-gray-50 p-3 rounded">
+                                                <li><strong>Прозрачность:</strong> 47%</li>
+                                                <li><strong>Прочность на изгиб:</strong> 1000 МПа</li>
+                                                <li><strong>Температура спекания:</strong> 1480°C (White/Pre-shaded), 1450°C (Multilayer)</li>
+                                            </ul>
+                                             <h4 class="font-semibold">Программа синтеризации (Стандартная):</h4>
+                                             <ol class="list-decimal list-inside space-y-1">
+                                                <li><b>Шаг 1:</b> Нагрев до 1150°C (через несколько этапов).</li>
+                                                <li><b>Шаг 2:</b> Выдержка при 1150°C в течение 30 минут.</li>
+                                                <li><b>Шаг 3:</b> Нагрев до 1480°C (или 1450°C) со скоростью 2-4°C/мин.</li>
+                                                <li><b>Шаг 4:</b> Выдержка при пиковой температуре 120 минут.</li>
+                                                <li><b>Шаг 5:</b> Остывание до 800°C со скоростью 8°C/мин.</li>
+                                             </ol>
+                                        </div>
+                                    </details>
+                                     <details>
+                                        <summary>TT Series (White, Multilayer)</summary>
+                                        <div class="content space-y-3">
+                                            <h4 class="font-semibold">Свойства:</h4>
+                                             <ul class="list-disc list-inside bg-gray-50 p-3 rounded">
+                                                <li><strong>Прозрачность:</strong> 49%</li>
+                                                <li><strong>Прочность на изгиб:</strong> 600 МПа</li>
+                                                <li><strong>Температура спекания:</strong> 1450°C</li>
+                                            </ul>
+                                            <h4 class="font-semibold">Программа синтеризации (Стандартная):</h4>
+                                            <p>Аналогично программе для TT-ONE Multilayer (пиковая температура 1450°C).</p>
+                                        </div>
+                                    </details>
+                                     <details>
+                                        <summary>Explore Series (Functional, Esthetic, Hybrid)</summary>
+                                        <div class="content space-y-3">
+                                            <h4 class="font-semibold">Свойства:</h4>
+                                             <ul class="list-disc list-inside bg-gray-50 p-3 rounded">
+                                                <li><strong>Прозрачность:</strong> 43% - 48.8% (в зависимости от типа)</li>
+                                                <li><strong>Прочность на изгиб:</strong> 727 - 1300 МПа (градиентная)</li>
+                                                <li><strong>Температура спекания:</strong> 1480°C</li>
+                                            </ul>
+                                            <h4 class="font-semibold">Программа синтеризации (Стандартная):</h4>
+                                            <p>Аналогично программе для TT-ONE (пиковая температура 1480°C), но выдержка для Hybrid - 180 минут.</p>
+                                        </div>
+                                    </details>
+                                </div>
+                            </div>
+                            <!-- Стеклокерамика -->
+                            <div>
+                                <h3 class="text-xl font-semibold mb-3">2.2. Стеклокерамика Upcera-CAD</h3>
+                                <details>
+                                    <summary>Свойства и программы запекания</summary>
+                                    <div class="content space-y-4">
+                                        <p><a href="https://drive.google.com/file/d/1ebX46bUccv3q-C7_5rR0acr-TQ3EulVr/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline">Открыть инструкцию по применению &rarr;</a></p>
+                                        <div>
+                                            <h4 class="font-semibold text-lg">Свойства:</h4>
+                                            <ul class="list-disc list-inside mt-2 bg-gray-50 p-3 rounded">
+                                                <li><strong>Прочность на изгиб:</strong> >400 МПа</li>
+                                                <li><strong>КТР (25-500°C):</strong> (10.5±0.5) x10<sup>-6</sup>K<sup>-1</sup></li>
+                                                <li><strong>Химическая растворимость:</strong> &lt;100 мкг/см²</li>
+                                                <li><strong>Температура кристаллизации:</strong> 840-850°C</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold text-lg">Программы запекания:</h4>
+                                            <div class="overflow-x-auto mt-2">
+                                                <table class="min-w-full text-sm text-left bg-white border rounded">
+                                                    <thead class="bg-gray-100">
+                                                        <tr>
+                                                            <th class="p-2 border-b">Программа</th>
+                                                            <th class="p-2 border-b">Начало (°C)</th>
+                                                            <th class="p-2 border-b">Сушка (мм:сс)</th>
+                                                            <th class="p-2 border-b">Скорость (°C/мин)</th>
+                                                            <th class="p-2 border-b">Выдержка (°C)</th>
+                                                            <th class="p-2 border-b">Время (мин)</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="border-b"><td class="p-2 font-medium">Кристаллизация (1 этап)</td><td class="p-2">400</td><td class="p-2">00:30</td><td class="p-2">40</td><td class="p-2">840</td><td class="p-2">07:00</td></tr>
+                                                        <tr class="border-b"><td class="p-2 font-medium">Кристаллизация (2 этапа)</td><td class="p-2">400</td><td class="p-2">06:00</td><td class="p-2">90 / 30</td><td class="p-2">820 / 840</td><td class="p-2">00:10 / 7:00</td></tr>
+                                                        <tr class="border-b"><td class="p-2 font-medium">Глазурование</td><td class="p-2">400</td><td class="p-2">00:30</td><td class="p-2">40</td><td class="p-2">840</td><td class="p-2">03:00</td></tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </details>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Секция "Hyperdent" -->
+                    <section id="hyperdent" class="content-section">
+                         <h2 class="text-2xl font-bold mb-6 border-b pb-3">3. Программа Hyperdent</h2>
+                         <p class="mb-4 text-gray-600">Нажмите на инструкцию, чтобы открыть видео в всплывающем окне.</p>
+                         <div class="space-y-2">
+                            <div data-src-id="15L_I4rVpY8ESIMZTwk5RrEh_iH1PvGca" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                <span>1. Загрузка работы в диск, создание диска</span>
+                            </div>
+                            <div data-src-id="1Ga3BbLAJvIJT8um_-VpLodvCRamEyBHq" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                <span>2. Разметка шахты, присвоение категории</span>
+                            </div>
+                            <div data-src-id="1SEY-uxAJkwFp3ePUgpdtzXqHs3MZRZOL" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                               <span>3. Загрузка Премилла</span>
+                            </div>
+                            <div class="p-3">
+                                <span class="flex items-center text-gray-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" /><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" /></svg>
+                                    <span>4. Компенсация фрезерования</span>
+                                </span>
+                                <div class="mt-2 pl-8 space-y-2">
+                                     <div data-src-id="1S5Wig357OgZGFFjMRlU_U891UewNeo8W" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors">
+                                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                       <span>4.1 Вариант 1</span>
+                                    </div>
+                                    <div data-src-id="1nj8LsccpSh1TD85KVminqNDRUz5EXF29" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors">
+                                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                       <span>4.2 Вариант 2</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-src-id="1BUAy8DstBi8VsY92jLXvpLzYFTXsBTS0" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                <span>5. Разметка замка, телескопа</span>
+                            </div>
+                            <div data-src-id="1n5LBZJSoe4iXiYx6qwuShqhUOB7iRvxg" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                               <span>6. Создание не полного файла работы (Допил)</span>
+                            </div>
+                         </div>
+                    </section>
+                    
+                    <!-- Секция "Millbox" -->
+                    <section id="millbox" class="content-section">
+                         <h2 class="text-2xl font-bold mb-6 border-b pb-3">4. Программа Millbox</h2>
+                         <p class="mb-4 text-gray-600">Нажмите на инструкцию, чтобы открыть видео в всплывающем окне.</p>
+                         <div class="space-y-2">
+                            <div data-src-id="1UoBp6qQRLlQ1ZhDVhIf2XgwPAL274w0F" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                1. Базовое видео
+                            </div>
+                            <div data-src-id="1NIIi0dCYWO3duBwmlMI0Jg5YCRba04Jh" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                2. Размещение Полной Дуги из циркония
+                            </div>
+                            <div data-src-id="1fE2uvU67ZHyfsCjduvRWKRZsqykDq-Fd" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                               3. 90 градусная обработка
+                            </div>
+                            <div data-src-id="1aWWuXnTx5eApb8A-Y5V4T9VgqFzrKDir" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                               4. Корректировка границы реставрации
+                            </div>
+                            <div data-src-id="1bJLEDgKjeI6zJUjtBKhquga_U1lprtbx" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                5. Переразметка кривых шахты
+                            </div>
+                            <div data-src-id="1ekgVM1Soh66uAWJuNZ8potS4CGDXbA3G" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                               6. Сохранение постоянных компенсаций фрезерования
+                            </div>
+                         </div>
+                    </section>
+
+                    <!-- Секция "Печи" -->
+                    <section id="pechi" class="content-section">
+                        <h2 class="text-2xl font-bold mb-6 border-b pb-3">5. Печи</h2>
+                         <p class="text-gray-600 mb-6">Нажмите на изображение печи, чтобы развернуть список инструкций.</p>
+                        <div class="flex flex-col md:flex-row gap-8 justify-center">
+
+                            <!-- Карточка GT1 -->
+                            <div class="interactive-card w-full md:w-1/2">
+                                <figure class="cursor-pointer bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                                    <img src="https://lh3.googleusercontent.com/d/1s-SgYG01IQIgYOLw5paqsNnBnGVMQj6P" alt="Печь GT1" class="w-full h-auto object-contain rounded-md mx-auto" style="max-height: 300px;">
+                                    <figcaption class="text-center font-bold text-lg mt-4">Печь для Синтеризации GT1</figcaption>
+                                </figure>
+                                <div class="collapsible-content mt-2">
+                                    <div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
+                                        <div data-src-id="1b6_0ETvti_Ez5OoOOotbL-wp_W1RASGs" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">Сборка</div>
+                                        <div data-src-id="1LG3JasxWjASA1R530slC_pb4S2oVirxb" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">Ввод программы/Использование (Часть 1)</div>
+                                        <div data-src-id="1-ysu88OutsoKGPM4Yrblj69tdBfgRP8h" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">Ввод программы/Использование (Часть 2)</div>
+                                        <details class="group">
+                                            <summary class="list-none p-2 rounded-md font-semibold text-green-800 bg-green-100 hover:bg-green-200 transition-colors cursor-pointer">
+                                                Советы
+                                            </summary>
+                                            <div class="p-3 mt-1 text-sm text-gray-700 border border-green-200 rounded-b-md bg-white">
+                                                Для стабильной работы печи необходимо напряжение с чистым синусом без скачков — рекомендуем использовать ИБП и стабилизатор. Перед включением убедитесь, что помещение сухое и чистое. Если печь не использовалась более суток, обязателен цикл просушки — 200 °C на 1 час, иначе возможно растрескивание керамики или деградация нагревателей.
+                                                <br><br>
+                                                Очищайте камеру не реже 1 раза в неделю — используйте или специальный очистительный порошок, или загружайте необработанные куски циркона для адсорбции загрязнений.
+                                                <br><br>
+                                                Любой цирконий перед синтеризацией требует просушки под ИК-лампой не менее 20 минут, особенно если он окрашен. Влага вызывает микротрещины и дефекты структуры.
+                                                <br><br>
+                                                При сушке циркона не используйте бытовые фены или духовые шкафы. Только ИК-лампа с рассеянным теплом, на расстоянии не ближе 20 см.
+                                                <br><br>
+                                                После каждого синтер-цикла дайте печи остыть до &lt;100 °C с закрытой дверцей. Открывание горячей камеры может нарушить температурный профиль и деформировать изделие.
+                                                <br><br>
+                                                Раз в 2–3 месяца выполняйте калибровочный цикл по инструкции производителя. Это позволяет держать равномерность нагрева и точность синтеризации.
+                                            </div>
+                                        </details>
+                                        <a href="#" class="block p-2 rounded-md text-red-600 font-semibold hover:bg-red-100 transition-colors">Ошибки</a>
+                                        <div data-src-id="1UJc4rXHUmcJiTkKqJ9FLStfyGBOuCvbo" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">Документы</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Карточка A7+ -->
+                            <div class="interactive-card w-full md:w-1/2">
+                                <figure class="cursor-pointer bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                                    <img src="https://lh3.googleusercontent.com/d/1PwuGAqpuXoaEbqM1GrklSFob4N0-BMPs" alt="Печь A7+" class="w-full h-auto object-contain rounded-md mx-auto" style="max-height: 300px;">
+                                    <figcaption class="text-center font-bold text-lg mt-4">Печь для Керамики A7+</figcaption>
+                                </figure>
+                                 <div class="collapsible-content mt-2">
+                                    <div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
+                                        <div data-src-id="1Z-3qobNlk_toWFITQIjNNf_oEWeqq1X6" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100 transition-colors">Документы</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для чек-листа -->
+    <div id="checklist-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center p-4 border-b">
+                 <h3 id="checklist-title" class="text-xl font-bold">Чек-лист для запуска</h3>
+                 <button id="close-checklist-btn" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+            </div>
+            <div id="checklist-content" class="p-6 text-left">
+                <!-- Content will be injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для видео и PDF -->
+    <div id="item-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg w-[90vw] max-w-7xl h-auto overflow-hidden">
+            <div class="flex justify-end p-2">
+                <button id="close-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+            </div>
+            <div class="p-2 md:p-5" style="padding-top: 0;">
+                <div class="w-full aspect-video">
+                    <iframe id="item-iframe" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Логика для пароля ---
+            const passwordModal = document.getElementById('password-modal');
+            const mainContent = document.getElementById('main-content');
+            const passwordForm = document.getElementById('password-form');
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error-message');
+            const correctPassword = '201212';
+
+            passwordForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (passwordInput.value === correctPassword) {
+                    passwordModal.classList.add('hidden');
+                    mainContent.classList.remove('hidden');
+                } else {
+                    errorMessage.textContent = 'Неверный пароль';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                    setTimeout(() => {
+                        errorMessage.textContent = '';
+                    }, 2000);
+                }
+            });
+
+            // --- Навигация и отображение секций ---
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+
+            function showSection(hash) {
+                if (!hash) hash = '#welcome';
+                
+                let activeSectionFound = false;
+                sections.forEach(section => {
+                    if ('#' + section.id === hash) {
+                        section.classList.add('active');
+                        activeSectionFound = true;
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+
+                if (!activeSectionFound) {
+                    document.getElementById('welcome').classList.add('active');
+                    hash = '#welcome';
+                }
+
+                navLinks.forEach(navLink => {
+                    if (navLink.getAttribute('href') === hash) {
+                        navLink.classList.add('active');
+                    } else {
+                        navLink.classList.remove('active');
+                    }
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    window.location.hash = targetId;
+                });
+            });
+            
+            window.addEventListener('hashchange', () => {
+                 showSection(window.location.hash);
+            });
+
+            showSection(window.location.hash);
+
+            // --- Аккордеон для станков и печей ---
+            const interactiveCards = document.querySelectorAll('.interactive-card');
+            interactiveCards.forEach(card => {
+                const trigger = card.querySelector('figure');
+                const content = card.querySelector('.collapsible-content');
+
+                trigger.addEventListener('click', () => {
+                    const isCurrentlyExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+                    const parentSection = card.closest('.content-section');
+                    parentSection.querySelectorAll('.collapsible-content').forEach(item => {
+                        if (item !== content) {
+                           item.style.maxHeight = null;
+                        }
+                    });
+
+                    if (!isCurrentlyExpanded) {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                    } else {
+                         content.style.maxHeight = null;
+                    }
+                });
+                
+                // FIX: Recalculate height when details (tips) are toggled
+                const detailsElements = card.querySelectorAll('details');
+                if (detailsElements) {
+                    detailsElements.forEach(detailsElement => {
+                        detailsElement.addEventListener('toggle', () => {
+                            if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                                 content.style.maxHeight = content.scrollHeight + 'px';
+                            }
+                        });
+                    });
+                }
+            });
+
+            // --- Модальное окно для видео и PDF ---
+            const itemModal = document.getElementById('item-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const itemIframe = document.getElementById('item-iframe');
+            
+            function openModal(srcId, srcType = 'drive') {
+                let embedUrl = '';
+                if (srcType === 'youtube') {
+                    const [videoId, paramsString] = srcId.split('?');
+                    embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    if (paramsString) {
+                        const params = new URLSearchParams(paramsString);
+                        if (params.has('t')) {
+                            embedUrl += `?start=${params.get('t')}`;
+                        }
+                    }
+                } else { // default to 'drive'
+                    embedUrl = `https://drive.google.com/file/d/${srcId}/preview`;
+                }
+                itemIframe.src = embedUrl;
+                itemModal.classList.remove('hidden');
+            }
+
+            function closeModal() {
+                itemIframe.src = ''; 
+                itemModal.classList.add('hidden');
+            }
+
+            // --- Модальное окно для чек-листа ---
+            const checklistModal = document.getElementById('checklist-modal');
+            const closeChecklistBtn = document.getElementById('close-checklist-btn');
+            const checklistContent = document.getElementById('checklist-content');
+            const checklistTitle = document.getElementById('checklist-title');
+
+            const checklists = {
+                a52: `
+                    <h4 class="font-bold mb-2">Добрый день!</h4>
+                    <p class="mb-4">Пожалуйста, выполните следующие шаги для первичной калибровки оборудования:</p>
+                    <ul class="space-y-3">
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Сделайте общую фотографию станка на рабочем месте.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Включите станок и сделайте фото: панели давления воздуха (справа), шильдика с серийным номером.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Для калибровки понадобится штангенциркуль. Замерьте им диаметр хвостовика штатной 2мм фрезы из комплекта, сделайте фото замера с отображением значений.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Установите фрезу 2мм в первый слот магазина (4 для A52W и A52DW), режущей частью вниз.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Установите восковой диск 12мм.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>На станке нажмите «Старт». Если файл калибровки не выбран — нажмите кнопку «Файл» и выберите его вручную. (Если выбран неправильный файл, появится ошибка — это нормально.)</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>После окончания резки восковых кубиков: Нажмите кнопку «Калибровка» на экране станка, появится подсказка, какие размеры необходимо замерить. Выполните замеры и сделайте фото каждого.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>До подтверждения результатов калибровки — отправьте фотографии в WhatsApp. Мы проверим их и подтвердим, что оборудование работает корректно.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>После завершения: Снимите фрезу, упакуйте обратно в коробочку, подпишите как «калибровочная». Используйте её только для калибровки в будущем.</span></label></li>
+                    </ul>
+                    <p class="mt-4 text-sm text-gray-600">Рекомендуем проводить калибровку раз в 1-2 месяца, либо чаще — в зависимости от объёма и условий эксплуатации.</p>
+                `,
+                b52: `
+                    <h4 class="font-bold mb-2">Добрый день!</h4>
+                    <p class="mb-4">Пожалуйста, выполните следующие шаги для первичной калибровки оборудования:</p>
+                    <ul class="space-y-3">
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Сделайте общую фотографию станка на рабочем месте.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Включите станок и сделайте фото: панели давления воздуха (справа), шильдика с серийным номером.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Для калибровки понадобится штангенциркуль. Замерьте им диаметр хвостовика штатной 2мм фрезы из комплекта, сделайте фото замера с отображением значений.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Установите фрезу 2мм во второй слот магазина, режущей частью вниз.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Установите восковой диск 12мм.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>На станке нажмите «Старт». Если файл калибровки не выбран — нажмите кнопку «Файл» и выберите его вручную. (Если выбран неправильный файл, появится ошибка — это нормально.)</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>После окончания резки восковых кубиков: Нажмите кнопку «Калибровка» на экране станка, появится подсказка, какие размеры необходимо замерить. Выполните замеры и сделайте фото каждого.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>До подтверждения результатов калибровки — отправьте фотографии в WhatsApp. Мы проверим их и подтвердим, что оборудование работает корректно.</span></label></li>
+                        <li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>После завершения: Снимите фрезу, упакуйте обратно в коробочку, подпишите как «калибровочная». Используйте её только для калибровки в будущем.</span></label></li>
+                    </ul>
+                    <p class="mt-4 text-sm text-gray-600">Рекомендуем проводить калибровку раз в 2 месяца, либо чаще — в зависимости от объема и условий эксплуатации.</p>
+                `
+            };
+
+            function openChecklistModal(machine) {
+                checklistTitle.textContent = `Чек-лист для запуска ${machine.toUpperCase()}`;
+                checklistContent.innerHTML = checklists[machine];
+                checklistModal.classList.remove('hidden');
+            }
+
+            function closeChecklistModal() {
+                checklistModal.classList.add('hidden');
+                checklistContent.innerHTML = '';
+            }
+            
+            // Эта функция будет вызываться для назначения обработчиков
+            function setupItemLinks() {
+                document.querySelectorAll('.item-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const srcId = link.dataset.srcId;
+                        const srcType = link.dataset.srcType || 'drive';
+                        if(srcId) {
+                            openModal(srcId, srcType);
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.launch-checklist-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const machine = btn.dataset.machine;
+                        openChecklistModal(machine);
+                    });
+                });
+            }
+
+            setupItemLinks(); // Вызываем один раз при загрузке
+
+            closeModalBtn.addEventListener('click', closeModal);
+            closeChecklistBtn.addEventListener('click', closeChecklistModal);
+
+
+            itemModal.addEventListener('click', (e) => {
+                if (e.target === itemModal) {
+                    closeModal();
+                }
+            });
+
+            checklistModal.addEventListener('click', (e) => {
+                if (e.target === checklistModal) {
+                    closeChecklistModal();
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === "Escape") {
+                    if (!itemModal.classList.contains('hidden')) {
+                        closeModal();
+                    }
+                    if (!checklistModal.classList.contains('hidden')) {
+                        closeChecklistModal();
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+
