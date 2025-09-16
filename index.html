@@ -435,7 +435,7 @@
                          </div>
                     </section>
 
-                     <!-- Секция "Печи" -->
+                    <!-- Секция "Печи" -->
                     <section id="pechi" class="content-section">
                         <h2 class="text-2xl font-bold mb-6 border-b pb-3">5. Печи</h2>
                          <p class="text-gray-600 mb-6">Нажмите на изображение печи, чтобы развернуть список инструкций.</p>
@@ -623,7 +623,7 @@
 
             showSection(window.location.hash);
 
-            // --- Аккордеон для станков и печей ---
+            // --- Аккордеон для станков ---
             const interactiveCards = document.querySelectorAll('.interactive-card');
             interactiveCards.forEach(card => {
                 const trigger = card.querySelector('figure');
@@ -631,6 +631,7 @@
 
                 trigger.addEventListener('click', () => {
                     const isCurrentlyExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+                    // Закрываем все аккордеоны в той же секции
                     const parentSection = card.closest('.content-section');
                     parentSection.querySelectorAll('.collapsible-content').forEach(item => {
                         if (item !== content) {
@@ -793,6 +794,4 @@
 
 </body>
 </html>
-
-
 
