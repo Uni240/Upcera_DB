@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Выберите язык / Choose Language / 选择语言</title>
+    <title>Выберите язык / Choose Language / Choisissez la langue</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -19,37 +19,58 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen py-12">
 
-    <div class="container mx-auto text-center p-8">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-            Добро пожаловать! / Welcome! / 欢迎!
+    <div class="container mx-auto text-center px-4">
+        <h1 class="text-2xl md:text-4xl font-bold text-gray-800 mb-4 leading-tight">
+            Добро пожаловать! / Welcome! / 欢迎!<br class="hidden md:block">
+            Bienvenue ! / Willkommen! / ¡Bienvenido!
         </h1>
         <p class="text-gray-600 text-lg mb-12">
-            Выберите язык / Choose Language / 选择语言
+            Выберите язык / Choose Language / 选择语言 / Choisissez la langue
         </p>
 
-        <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+        <!-- Сетка языков: 1 колонка на мобильных, 2 на планшетах, 3 на десктопах -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            
             <!-- Russian -->
-            <a href="ru.html" class="flag-card bg-white p-8 rounded-xl shadow-lg w-full md:w-1/3 max-w-sm">
-                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ru.svg" alt="Русский язык" class="w-40 mx-auto mb-6 rounded-md border border-gray-200">
-                <h2 class="text-2xl font-semibold text-gray-900">Русский</h2>
+            <a href="ru.html" class="flag-card bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/ru.svg" alt="Русский язык" class="w-32 mx-auto mb-4 rounded-md border border-gray-200 shadow-sm">
+                <h2 class="text-xl font-semibold text-gray-900">Русский</h2>
             </a>
             
             <!-- English -->
-            <a href="en.html" class="flag-card bg-white p-8 rounded-xl shadow-lg w-full md:w-1/3 max-w-sm">
-                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gb.svg" alt="English Language" class="w-40 mx-auto mb-6 rounded-md border border-gray-200">
-                <h2 class="text-2xl font-semibold text-gray-900">English</h2>
+            <a href="en.html" class="flag-card bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/gb.svg" alt="English Language" class="w-32 mx-auto mb-4 rounded-md border border-gray-200 shadow-sm">
+                <h2 class="text-xl font-semibold text-gray-900">English</h2>
             </a>
 
             <!-- Chinese -->
-            <a href="cn.html" class="flag-card bg-white p-8 rounded-xl shadow-lg w-full md:w-1/3 max-w-sm">
-                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cn.svg" alt="Chinese Language" class="w-40 mx-auto mb-6 rounded-md border border-gray-200">
-                <h2 class="text-2xl font-semibold text-gray-900">中文</h2>
+            <a href="cn.html" class="flag-card bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/cn.svg" alt="Chinese Language" class="w-32 mx-auto mb-4 rounded-md border border-gray-200 shadow-sm">
+                <h2 class="text-xl font-semibold text-gray-900">中文</h2>
             </a>
+
+            <!-- French -->
+            <a href="fr.html" class="flag-card bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/fr.svg" alt="Français" class="w-32 mx-auto mb-4 rounded-md border border-gray-200 shadow-sm">
+                <h2 class="text-xl font-semibold text-gray-900">Français</h2>
+            </a>
+
+            <!-- German -->
+            <a href="de.html" class="flag-card bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/de.svg" alt="Deutsch" class="w-32 mx-auto mb-4 rounded-md border border-gray-200 shadow-sm">
+                <h2 class="text-xl font-semibold text-gray-900">Deutsch</h2>
+            </a>
+
+            <!-- Spanish -->
+            <a href="es.html" class="flag-card bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/es.svg" alt="Español" class="w-32 mx-auto mb-4 rounded-md border border-gray-200 shadow-sm">
+                <h2 class="text-xl font-semibold text-gray-900">Español</h2>
+            </a>
+
         </div>
     </div>
 
 </body>
 </html>
-
