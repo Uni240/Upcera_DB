@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İnteraktif Bilgi Bankası</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .nav-link.active { background-color: #3b82f6; color: white; }
+        .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; }
+        .material-accordion details > summary { list-style: none; cursor: pointer; padding: 1rem; background-color: #f3f4f6; border-radius: 0.5rem; font-weight: 600; transition: background-color 0.2s ease; }
+        .material-accordion details > summary:hover { background-color: #e5e7eb; }
+        .material-accordion details[open] > summary { background-color: #dbeafe; color: #1d4ed8; }
+        .material-accordion details .content { padding: 1rem; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 0.5rem 0.5rem; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div id="password-modal" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-sm text-center">
+            <h2 class="text-2xl font-bold mb-4">Erişim Gerekli</h2>
+            <p class="text-gray-600 mb-6">Lütfen giriş yapmak için şifreyi giriniz.</p>
+            <form id="password-form">
+                <input type="password" id="password-input" class="w-full px-4 py-2 border rounded-lg mb-4" placeholder="Şifre">
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Giriş Yap</button>
+            </form>
+            <p id="error-message" class="text-red-500 mt-4 h-4"></p>
+        </div>
+    </div>
+
+    <div id="main-content" class="hidden">
+        <div class="container mx-auto p-4 md:p-8">
+            <header class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold">Bilgi Bankası</h1>
+                <p class="text-md text-gray-600 mt-2">Ekipmanlar, malzemeler ve yazılımlar hakkında tüm bilgiler</p>
+            </header>
+
+            <div class="flex flex-col md:flex-row gap-8">
+                <nav id="navigation" class="w-full md:w-1/4 bg-white p-6 rounded-lg shadow-md self-start">
+                    <h2 class="font-bold text-xl mb-4 border-b pb-2">Bölümler</h2>
+                    <ul class="space-y-2">
+                        <li><a href="#stanki" class="nav-link block p-3 rounded-lg hover:bg-gray-200">1. Makineler</a></li>
+                        <li><a href="#materialy" class="nav-link block p-3 rounded-lg hover:bg-gray-200">2. Malzemeler</a></li>
+                        <li><a href="#hyperdent" class="nav-link block p-3 rounded-lg hover:bg-gray-200">3. Hyperdent Yazılımı</a></li>
+                        <li><a href="#millbox" class="nav-link block p-3 rounded-lg hover:bg-gray-200">4. Millbox Yazılımı</a></li>
+                        <li><a href="#pechi" class="nav-link block p-3 rounded-lg hover:bg-gray-200">5. Fırınlar</a></li>
+                        <li><hr class="my-2"></li>
+                        <li><div data-src-id="16WVDxfE5f5nl9NutKr4qr109UEJOIVHE" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-green-700 hover:bg-green-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" /></svg>
+                            <span>Ürün Kataloğu</span>
+                        </div></li>
+                    </ul>
+                </nav>
+
+                <main class="w-full md:w-3/4 bg-white p-8 rounded-lg shadow-md">
+                    <section id="welcome" class="content-section active">
+                        <h2 class="text-2xl font-bold mb-4">Hoş Geldiniz!</h2>
+                        <p>Bilgileri görüntülemek için soldaki menüden bir bölüm seçiniz.</p>
+                        <div class="mt-6 p-4 bg-blue-50 border-l-4 border-blue-500 text-blue-800 rounded-r-lg">
+                            <p class="font-semibold">Nasıl çalışır?</p>
+                            <p class="mt-2">Bu bilgi bankası sizin etkileşimli asistanınızdır. İhtiyacınız olan bilgiyi bulmak için menüden bir bölüm seçin. Kalifiye yardım alabilmeniz ve sorunla karşılaşmadan önce çözüme aşina olabilmeniz için içeriği sürekli güncelliyoruz.</p>
+                        </div>
+                    </section>
+                    
+                    <section id="stanki" class="content-section">
+                        <h2 class="text-2xl font-bold mb-6 border-b pb-3">1. Makineler</h2>
+
+                        <div class="p-4 mb-6 bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 rounded-r-lg" role="alert">
+                            <h3 class="text-xl font-bold">Garanti Yükümlülükleri</h3>
+                            <p class="mt-2">Garanti, makinenin hava sisteminde nem olmaması ve stabil güç kaynağı gibi işletme koşullarına uyulması durumunda sağlanır. Bunun için laboratuvarın bir voltaj regülatörü ve hava kurutucusu ile donatılmış olması gerekir. Garanti yükümlülükleri, yanlış kullanım veya kullanıcı hatalarından kaynaklanan arızaları kapsamaz.</p>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-6">Talimat listesini genişletmek için makine resmine tıklayın.</p>
+                        <div class="flex flex-col md:flex-row gap-8 justify-center">
+                            <div class="interactive-card w-full md:w-1/2">
+                                <figure class="cursor-pointer bg-white p-4 rounded-lg shadow-md hover:shadow-xl">
+                                    <img src="https://lh3.googleusercontent.com/d/1VsfU9Fhc64gYKahbu7T03RXF-xkwXTD8" alt="A52 Makinesi" class="w-full h-auto object-contain rounded-md mx-auto" style="max-height: 300px;">
+                                    <figcaption class="text-center font-bold text-lg mt-4">A52 Serisi</figcaption>
+                                </figure>
+                                <div class="collapsible-content mt-2">
+                                    <div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
+                                        <div data-src-id="1ev2bTxKaWmTBZRko3NsVqMYObaulqyF4" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Montaj (Video)</div>
+                                        <div class="launch-checklist-btn cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100" data-machine="a52">Lansman</div>
+                                        <div data-src-id="1kNZyyCDw8w5txSl14h6dP4dAIffH1Qe8" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Kalibrasyon (Video)</div>
+                                        <div data-src-id="1nM0ibR6NVfrdVo63LlBMIbmcqgggof" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Kumpas Kullanımı</div>
+                                        <div data-src-type="youtube" data-src-id="mUQ06kAM12o?t=85" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Soğutma Sıvısı Karıştırma</div>
+                                        <div data-src-type="youtube" data-src-id="NeUaZUK2GMY" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Bakım (YouTube)</div>
+                                        <details class="group"><summary class="list-none p-2 rounded-md font-semibold text-gray-800 bg-gray-100 hover:bg-gray-200 cursor-pointer">Belgeler</summary><div class="p-3 mt-1 text-sm border border-gray-200 rounded-b-md bg-white space-y-2"><div data-src-id="1Y20XzIpwZj2Vf3wjBaeJytVTB3SjHg1T" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Notlar</div></div></details>
+                                        <details class="group"><summary class="list-none p-2 rounded-md font-semibold text-red-800 bg-red-100 hover:bg-red-200 cursor-pointer">Hatalar</summary><div class="p-3 mt-1 text-sm border border-red-200 rounded-b-md bg-white space-y-2"><div data-src-id="1644UY76y0anYCZ5vE92bm6R_ODxB3l33" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">1. Takım Değiştirme ve Sıfırlama</div><div data-src-id="1QwmBMhdC5ingw8BxyvCYXRggzcJCOsee" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">2. Stop Ringsiz Takım Takma</div><div data-src-id="1yEFI9A3kNXwwVRjO_53QNxTEtxnKp21o" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">3. "Takım Ömrü" Etkinleştirme</div><div data-src-id="14G4jXnqH1RyaC6AysY3t13ZaK8r2PM1Y" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">4. Disk Alanı Yok</div></div></details>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="interactive-card w-full md:w-1/2">
+                                <figure class="cursor-pointer bg-white p-4 rounded-lg shadow-md hover:shadow-xl">
+                                    <img src="https://lh3.googleusercontent.com/d/1m5tO61RB0JpeqkerWFktkc4ACrKmTrc7" alt="B52 Makinesi" class="w-full h-auto object-contain rounded-md mx-auto" style="max-height: 300px;">
+                                    <figcaption class="text-center font-bold text-lg mt-4">B52 Serisi</figcaption>
+                                </figure>
+                                <div class="collapsible-content mt-2">
+                                    <div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
+                                        <div data-src-id="1Rvhov1JrpvxFAzQEbSQ2cuz-XRaGDLgv" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Montaj (Video)</div>
+                                        <div class="launch-checklist-btn cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100" data-machine="b52">Lansman</div>
+                                        <div data-src-id="1kNZyyCDw8w5txSl14h6dP4dAIffH1Qe8" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Kalibrasyon (Video)</div>
+                                        <div data-src-id="1nM0ibR6NVfrdVo63LlBMIbmcqgggof" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Kumpas Kullanımı</div>
+                                        <div data-src-id="12qqR-ipVL1Xg6wyCe9_kZC89BnOMFDGj" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Bakım (YouTube)</div>
+                                        <details class="group"><summary class="list-none p-2 rounded-md font-semibold text-gray-800 bg-gray-100 hover:bg-gray-200 cursor-pointer">Belgeler</summary><div class="p-3 mt-1 text-sm border border-gray-200 rounded-b-md bg-white space-y-2"><div data-src-id="101SWMXBhv-hS2AVRH_pqVvT4aQZR9ZFk" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Kullanım Kılavuzu</div></div></details>
+                                        <details class="group"><summary class="list-none p-2 rounded-md font-semibold text-red-800 bg-red-100 hover:bg-red-200 cursor-pointer">Hatalar</summary><div class="p-3 mt-1 text-sm border border-red-200 rounded-b-md bg-white space-y-2"><div data-src-id="1644UY76y0anYCZ5vE92bm6R_ODxB3l33" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">1. Takım Değiştirme ve Sıfırlama</div><div data-src-id="1yEFI9A3kNXwwVRjO_53QNxTEtxnKp21o" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">2. "Takım Ömrü" Etkinleştirme</div><div data-src-id="14G4jXnqH1RyaC6AysY3t13ZaK8r2PM1Y" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">3. Disk Alanı Yok</div></div></details>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section id="materialy" class="content-section">
+                        <h2 class="text-2xl font-bold mb-6 border-b pb-3">2. Malzemeler</h2>
+                        <div class="space-y-8 material-accordion">
+                            <div>
+                                <h3 class="text-xl font-semibold mb-3">2.1. Zirkonya</h3>
+                                <div class="space-y-2">
+                                    <details><summary>DUO</summary><div class="content space-y-3"><h4>Özellikler:</h4><ul class="list-disc list-inside bg-gray-50 p-3 rounded"><li><strong>Translusens:</strong> 45% - 48%</li><li><strong>Eğilme Dayanımı:</strong> 850 - 1200 MPa</li><li><strong>Sinterleme Sonrası Yoğunluk:</strong> ≥6.0 g/cm³</li><li><strong>CTE (25-500°C):</strong> (10.5±0.5)×10<sup>-6</sup> K<sup>-1</sup></li><li><strong>Sinterleme Sıcaklığı:</strong> 1480°C</li></ul><h4>Sinterleme Programı (Standart, 7 üyeye kadar):</h4><ol class="list-decimal list-inside space-y-1"><li><b>Adım 1:</b> 17°C/dk hızla 1000°C'ye ısıtma.</li><li><b>Adım 2:</b> 10°C/dk hızla 1300°C'ye ısıtma.</li><li><b>Adım 3:</b> 7°C/dk hızla 1515°C'ye ısıtma.</li><li><b>Adım 4:</b> 1515°C'de 90 dakika bekletme.</li><li><b>Adım 5:</b> 8°C/dk hızla 800°C'ye soğutma.</li><li><b>Adım 6:</b> Doğal soğuma.</li></ol><h4>Sinterleme Programı (Uzun köprüler, >7 üye):</h4><ol class="list-decimal list-inside space-y-1"><li><b>Adım 1:</b> 4°C/dk hızla 1300°C'ye ısıtma.</li><li><b>Adım 2:</b> 2°C/dk hızla 1515°C'ye ısıtma.</li><li><b>Adım 3:</b> 1515°C'de 120 dakika bekletme.</li><li><b>Adım 4:</b> 4°C/dk hızla 800°C'ye soğutma.</li><li><b>Adım 5:</b> Doğal soğuma.</li></ol></div></details>
+                                    <details><summary>HT White</summary><div class="content space-y-3"><h4>Özellikler:</h4><ul class="list-disc list-inside bg-gray-50 p-3 rounded"><li><strong>Translusens:</strong> 39%</li><li><strong>Eğilme Dayanımı:</strong> 1300 MPa</li><li><strong>Sinterleme Sıcaklığı:</strong> 1530°C</li></ul><h4>Sinterleme Programı:</h4><ol class="list-decimal list-inside space-y-1"><li><b>Adım 1:</b> 3°C/dk hızla 500°C'ye ısıtma.</li><li><b>Adım 2:</b> 8°C/dk hızla 1150°C'ye ısıtma.</li><li><b>Adım 3:</b> 1150°C'de 30 dakika bekletme.</li><li><b>Adım 4:</b> 2°C/dk hızla 1300°C'ye ısıtma.</li><li><b>Adım 5:</b> 4°C/dk hızla 1530°C'ye ısıtma.</li><li><b>Adım 6:</b> 1530°C'de 120 dakika bekletme.</li><li><b>Adım 7:</b> 8°C/dk hızla 800°C'ye soğutma, ardından doğal soğuma.</li></ol></div></details>
+                                    <details><summary>ST Serisi (White, Pre-shaded, Multilayer)</summary><div class="content space-y-3"><h4>Özellikler:</h4><ul class="list-disc list-inside bg-gray-50 p-3 rounded"><li><strong>Translusens:</strong> 43%</li><li><strong>Eğilme Dayanımı:</strong> 1300 MPa</li><li><strong>Sinterleme Sıcaklığı:</strong> 1530°C</li></ul><h4>Sinterleme Programı (Standart):</h4><p>HT White ile aynı (pik sıcaklık 1530°C).</p><h4>Sinterleme Programı (Hızlı, 4 saat):</h4><ol class="list-decimal list-inside space-y-1"><li><b>Adım 1:</b> 40°C/dk hızla 1150°C'ye ısıtma.</li><li><b>Adım 2:</b> 1150°C'de 10 dakika bekletme.</li><li><b>Adım 3:</b> 10°C/dk hızla 1550°C'ye ısıtma.</li><li><b>Adım 4:</b> 1550°C'de 120 dakika bekletme.</li><li><b>Adım 5:</b> 40°C/dk hızla 800°C'ye soğutma.</li></ol><h4>Sinterleme Programı (Hızlı, 2 saat):</h4><ol class="list-decimal list-inside space-y-1"><li><b>Adım 1:</b> 50°C/dk hızla 1150°C'ye ısıtma.</li><li><b>Adım 2:</b> 8°C/dk hızla 1550°C'ye ısıtma.</li><li><b>Adım 3:</b> 1550°C'de 30 dakika bekletme.</li><li><b>Adım 4:</b> 50°C/dk hızla 800°C'ye soğutma.</li></ol></div></details>
+                                    <details><summary>TT-ONE Serisi (White, Pre-shaded, Multilayer)</summary><div class="content space-y-3"><h4>Özellikler:</h4><ul class="list-disc list-inside bg-gray-50 p-3 rounded"><li><strong>Translusens:</strong> 47%</li><li><strong>Eğilme Dayanımı:</strong> 1000 MPa</li><li><strong>Sinterleme Sıcaklığı:</strong> 1480°C (White/Pre-shaded), 1450°C (Multilayer)</li></ul><h4>Sinterleme Programı (Standart):</h4><ol class="list-decimal list-inside space-y-1"><li><b>Adım 1:</b> 1150°C'ye ısıtma (birkaç aşamada).</li><li><b>Adım 2:</b> 1150°C'de 30 dakika bekletme.</li><li><b>Adım 3:</b> 2-4°C/dk hızla 1480°C'ye (veya 1450°C) ısıtma.</li><li><b>Adım 4:</b> Pik sıcaklıkta 120 dakika bekletme.</li><li><b>Adım 5:</b> 8°C/dk hızla 800°C'ye soğutma.</li></ol></div></details>
+                                    <details><summary>TT Serisi (White, Multilayer)</summary><div class="content space-y-3"><h4>Özellikler:</h4><ul class="list-disc list-inside bg-gray-50 p-3 rounded"><li><strong>Translusens:</strong> 49%</li><li><strong>Eğilme Dayanımı:</strong> 600 MPa</li><li><strong>Sinterleme Sıcaklığı:</strong> 1450°C</li></ul><h4>Sinterleme Programı (Standart):</h4><p>TT-ONE Multilayer ile aynı (pik sıcaklık 1450°C).</p></div></details>
+                                    <details><summary>Explore Serisi (Functional, Esthetic, Hybrid)</summary><div class="content space-y-3"><h4>Özellikler:</h4><ul class="list-disc list-inside bg-gray-50 p-3 rounded"><li><strong>Translusens:</strong> 43% - 48.8% (tipe bağlı olarak)</li><li><strong>Eğilme Dayanımı:</strong> 727 - 1300 MPa (gradyan)</li><li><strong>Sinterleme Sıcaklığı:</strong> 1480°C</li></ul><h4>Sinterleme Programı (Standart):</h4><p>TT-ONE ile aynı (pik sıcaklık 1480°C), ancak Hybrid için bekleme süresi 180 dakikadır.</p></div></details>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-3">2.2. Upcera-CAD Cam Seramik</h3>
+                                <details><summary>Özellikler ve Pişirme Programları</summary><div class="content space-y-4"><p><a href="https://drive.google.com/file/d/1ebX46bUccv3q-C7_5rR0acr-TQ3EulVr/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline">Kullanım Talimatlarını Aç &rarr;</a></p><div><h4>Özellikler:</h4><ul class="list-disc list-inside mt-2 bg-gray-50 p-3 rounded"><li><strong>Eğilme Dayanımı:</strong> >400 MPa</li><li><strong>CTE (25-500°C):</strong> (10.5±0.5) x10<sup>-6</sup>K<sup>-1</sup></li><li><strong>Kimyasal Çözünürlük:</strong> &lt;100 µg/cm²</li><li><strong>Kristalizasyon Sıcaklığı:</strong> 840-850°C</li></ul></div><div><h4>Pişirme Programları:</h4><div class="overflow-x-auto mt-2"><table class="min-w-full text-sm text-left bg-white border rounded"><thead class="bg-gray-100"><tr><th class="p-2 border-b">Program</th><th class="p-2 border-b">Başlangıç (°C)</th><th class="p-2 border-b">Kurutma (dk:sn)</th><th class="p-2 border-b">Hız (°C/dk)</th><th class="p-2 border-b">Bekletme (°C)</th><th class="p-2 border-b">Süre (dk)</th></tr></thead><tbody><tr class="border-b"><td class="p-2 font-medium">Kristalizasyon (1 aşama)</td><td>400</td><td>00:30</td><td>40</td><td>840</td><td>07:00</td></tr><tr class="border-b"><td class="p-2 font-medium">Kristalizasyon (2 aşama)</td><td>400</td><td>06:00</td><td>90 / 30</td><td>820 / 840</td><td>00:10 / 7:00</td></tr><tr class="border-b"><td class="p-2 font-medium">Sırlama (Glazing)</td><td>400</td><td>00:30</td><td>40</td><td>840</td><td>03:00</td></tr></tbody></table></div></div></div></details>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="hyperdent" class="content-section">
+                         <h2 class="text-2xl font-bold mb-6 border-b pb-3">3. Hyperdent Yazılımı</h2>
+                         <p class="mb-4 text-gray-600">Video açmak için bir talimata tıklayın.</p>
+                         <div class="space-y-2">
+                            <div data-src-id="16tHHAsoqDNJIpTlFzVeP5w88Oz4K6Axd" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>1. Blok ve Geometri Oluşturma</span></div>
+                            <div data-src-id="15L_I4rVpY8ESIMZTwk5RrEh_iH1PvGca" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>2. İşi Diske Yükleme, Disk Oluşturma</span></div>
+                            <div data-src-id="1Ga3BbLAJvIJT8um_-VpLodvCRamEyBHq" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>3. Vida Kanalı İşaretleme, Kategori Atama</span></div>
+                            <div data-src-id="1SEY-uxAJkwFp3ePUgpdtzXqHs3MZRZOL" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>4. Önceden Frezelenmiş Dayanak (Abutment) Yükleme</span></div>
+                            <div class="p-3"><span class="flex items-center text-gray-800"><svg class="h-5 w-5 mr-3 text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" /><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" /></svg><span>5. İşleme Kompanzasyonu</span></span><div class="mt-2 pl-8 space-y-2"><div data-src-id="1S5Wig357OgZGFFjMRlU_U891UewNeo8W" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>5.1 Seçenek 1</span></div><div data-src-id="1nj8LsccpSh1TD85KVminqNDRUz5EXF29" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>5.2 Seçenek 2</span></div></div></div>
+                            <div data-src-id="1BUAy8DstBi8VsY92jLXvpLzYFTXsBTS0" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>6. Kilit İşaretleme, Teleskop</span></div>
+                            <div data-src-id="1n5LBZJSoe4iXiYx6qwuShqhUOB7iRvxg" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>7. Tamamlanmamış İş Dosyası Oluşturma (finisaj için)</span></div>
+                         </div>
+                    </section>
+                    
+                    <section id="millbox" class="content-section">
+                         <h2 class="text-2xl font-bold mb-6 border-b pb-3">4. Millbox Yazılımı</h2>
+                         <p class="mb-4 text-gray-600">Video açmak için bir talimata tıklayın.</p>
+                         <div class="space-y-2">
+                             <div data-src-id="1UoBp6qQRLlQ1ZhDVhIf2XgwPAL274w0F" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 1. Temel Video</div>
+                             <div data-src-id="1NIIi0dCYWO3duBwmlMI0Jg5YCRba04Jh" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 2. Tam Zirkonya Ark Yerleşimi</div>
+                             <div data-src-id="1fE2uvU67ZHyfsCjduvRWKRZsqykDq-Fd" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 3. 90 Derece İşleme</div>
+                             <div data-src-id="1aWWuXnTx5eApb8A-Y5V4T9VgqFzrKDir" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 4. Restorasyon Marjı Ayarlama</div>
+                             <div data-src-id="1bJLEDgKjeI6zJUjtBKhquga_U1lprtbx" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 5. Vida Kanalı Eğrilerini Yeniden Tanımlama</div>
+                             <div data-src-id="1ekgVM1Soh66uAWJuNZ8potS4CGDXbA3G" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 6. Sabit İşleme Kompanzasyonlarını Kaydetme</div>
+                             <div data-src-id="18yoUwS_5LRhLMT7J3Zn_K2FK-1TqpDjN" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 7. Cam Seramik Yerleşimi</div>
+                             <div data-src-id="19FyzM3P9hhAthbw65NYCvjJ1072tyBr5" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 8. Önceden Frezelenmiş Dayanak Yerleşimi ve Blok Oluşturma</div>
+                         </div>
+                    </section>
+
+                    <section id="pechi" class="content-section">
+                        <h2 class="text-2xl font-bold mb-6 border-b pb-3">5. Fırınlar</h2>
+                        <p class="text-gray-600 mb-6">Talimat listesini genişletmek için fırın resmine tıklayın.</p>
+                        <div class="flex flex-col md:flex-row gap-8 justify-center">
+                            <div class="interactive-card w-full md:w-1/2">
+                                <figure class="cursor-pointer bg-white p-4 rounded-lg shadow-md hover:shadow-xl"><img src="https://lh3.googleusercontent.com/d/1qfWtD-qsesj2jBYoQebFPjhosFxHmLQf" alt="GT1 Fırını" class="w-full h-auto object-contain rounded-md mx-auto" style="max-height: 300px;"><figcaption class="text-center font-bold text-lg mt-4">GT1 Sinterleme Fırını</figcaption></figure>
+                                <div class="collapsible-content mt-2"><div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
+                                    <div data-src-id="1b6_0ETvti_Ez5OoOOotbL-wp_W1RASGs" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Montaj</div>
+                                    <div data-src-id="1LG3JasxWjASA1R530slC_pb4S2oVirxb" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Kullanım</div>
+                                    <div data-src-id="1-ysu88OutsoKGPM4Yrblj69tdBfgRP8h" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Program Girişi</div>
+                                    <details class="group"><summary class="list-none p-2 rounded-md font-semibold text-green-800 bg-green-100 hover:bg-green-200 cursor-pointer">İpuçları</summary><div class="p-3 mt-1 text-sm border border-green-200 rounded-b-md bg-white">Fırının stabil çalışması için dalgalanma içermeyen saf sinüs dalgalı bir voltaj gereklidir — bir UPS ve stabilizatör kullanmanızı öneririz. Çalıştırmadan önce odanın kuru ve temiz olduğundan emin olun. Fırın 24 saatten fazla kullanılmadıysa kurutma döngüsü zorunludur — 1 saat boyunca 200 °C, aksi takdirde seramiğin çatlaması veya ısıtma elemanlarının bozulması mümkündür.<br><br>Hazneyi haftada en az bir kez temizleyin — ya özel bir temizleme tozu kullanın ya da kirleticileri emmesi için işlenmemiş zirkonya parçaları yükleyin.<br><br>Herhangi bir zirkonya, sinterlemeden önce, özellikle renklendirilmişse en az 20 dakika IR lamba altında kurutma gerektirir. Nem, mikro çatlaklara ve yapısal kusurlara neden olur.<br><br>Zirkonyayı kurutmak için ev tipi saç kurutma makinesi veya fırın kullanmayın. Sadece en az 20 cm mesafeden difüz ısı veren bir IR lamba kullanın.<br><br>Her sinterleme döngüsünden sonra fırının kapısı kapalıyken &lt;100 °C'ye kadar soğumasını bekleyin. Sıcak bir hazneyi açmak sıcaklık profilini bozabilir ve ürünü deforme edebilir.<br><br>Her 2-3 ayda bir üreticinin talimatlarına göre bir kalibrasyon döngüsü gerçekleştirin. Bu, ısıtma homojenliğini ve sinterleme hassasiyetini korumaya yardımcı olur.</div></details>
+                                    <a href="#" class="block p-2 rounded-md text-red-600 font-semibold hover:bg-red-100">Hatalar</a>
+                                    <div data-src-id="1UJc4rXHUmcJiTkKqJ9FLStfyGBOuCvbo" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Belgeler</div>
+                                </div></div>
+                            </div>
+                            <div class="interactive-card w-full md:w-1/2">
+                                <figure class="cursor-pointer bg-white p-4 rounded-lg shadow-md hover:shadow-xl"><img src="https://lh3.googleusercontent.com/d/1kfvuD8TQXHzshAukuVIruSOmmEJGsCjT" alt="A7+ Fırını" class="w-full h-auto object-contain rounded-md mx-auto" style="max-height: 300px;"><figcaption class="text-center font-bold text-lg mt-4">A7+ Seramik Fırını</figcaption></figure>
+                                <div class="collapsible-content mt-2"><div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
+                                    <details class="group"><summary class="list-none p-2 rounded-md text-blue-700 hover:bg-blue-100 cursor-pointer">Program Girişi</summary><div class="p-3 mt-1 text-sm border border-blue-200 rounded-b-md bg-white space-y-1"><p><strong>P</strong> - program numarası</p><p><strong>B</strong> - Başlangıç sıcaklığı</p><p><strong>S1</strong> - dakika cinsinden kapı kapatma hızı</p><p><strong>T1</strong> - hedef sıcaklık</p><p><strong>t1</strong> - ısıtma hızı (derece/dakika)</p><p><strong>H1</strong> - bekleme süresi</p><p><strong>t2</strong> - ısıtma hızı (derece/dakika)</p><p><strong>T2</strong> - hedef sıcaklık</p><p><strong>H2</strong> - bekleme süresi</p><p><strong>V</strong> - vakum başlatma sıcaklığı</p><p><strong>VP</strong> - haznedeki vakum seviyesi</p><p><strong>VH</strong> - vakumu aç/kapat</p><p><strong>LS</strong> - kapı aralık sıcaklığı</p><p><strong>S2</strong> - fırın kapısı açılması</p></div></details>
+                                    <a href="#" class="block p-2 rounded-md text-red-600 font-semibold hover:bg-red-100">Hatalar</a>
+                                    <div data-src-id="1Z-3qobNlk_toWFITQIjNNf_oEWeqq1X6" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Belgeler</div>
+                                </div></div>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+            <footer class="text-center text-sm text-gray-500 mt-8 py-4 border-t">
+                © 2025 Upcera. Tüm hakları saklıdır. Bilgi Bankası Versiyonu: 1.2 (Güncelleme: 30.10.2025)
+            </footer>
+        </div>
+    </div>
+    
+    <div id="checklist-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"><div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto"><div class="flex justify-between items-center p-4 border-b"><h3 id="checklist-title" class="text-xl font-bold">Lansman Kontrol Listesi</h3><button id="close-checklist-btn" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button></div><div id="checklist-content" class="p-6 text-left"></div></div></div>
+    <div id="item-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"><div class="bg-white rounded-lg w-[90vw] max-w-7xl h-auto overflow-hidden"><div class="flex justify-end p-2"><button id="close-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button></div><div class="p-2 md:p-5 pt-0"><div class="w-full aspect-video"><iframe id="item-iframe" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div></div></div></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordModal = document.getElementById('password-modal');
+            const mainContent = document.getElementById('main-content');
+            const passwordForm = document.getElementById('password-form');
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error-message');
+            const correctPassword = '201212';
+
+            passwordForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (passwordInput.value === correctPassword) {
+                    passwordModal.classList.add('hidden');
+                    mainContent.classList.remove('hidden');
+                } else {
+                    errorMessage.textContent = 'Yanlış şifre';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                    setTimeout(() => { errorMessage.textContent = ''; }, 2000);
+                }
+            });
+
+            function setupEventListeners() {
+                const navLinks = document.querySelectorAll('.nav-link');
+                const sections = document.querySelectorAll('.content-section');
+
+                function showSection(hash) {
+                    if (!hash) hash = '#welcome';
+                    let activeSectionFound = false;
+                    sections.forEach(section => {
+                        const isActive = '#' + section.id === hash;
+                        section.classList.toggle('active', isActive);
+                        if (isActive) activeSectionFound = true;
+                    });
+                    if (!activeSectionFound) {
+                        document.getElementById('welcome').classList.add('active');
+                        hash = '#welcome';
+                    }
+                    navLinks.forEach(navLink => {
+                        navLink.classList.toggle('active', navLink.getAttribute('href') === hash);
+                    });
+                }
+
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        window.location.hash = this.getAttribute('href');
+                    });
+                });
+                window.addEventListener('hashchange', () => showSection(window.location.hash));
+                showSection(window.location.hash);
+
+                document.querySelectorAll('.interactive-card figure').forEach(trigger => {
+                    trigger.addEventListener('click', () => {
+                        const content = trigger.nextElementSibling;
+                        const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+                        const parentSection = trigger.closest('.content-section');
+                        parentSection.querySelectorAll('.interactive-card .collapsible-content').forEach(item => {
+                           if (item !== content) item.style.maxHeight = null;
+                        });
+                        content.style.maxHeight = isExpanded ? null : content.scrollHeight + 'px';
+                    });
+                });
+
+                document.querySelectorAll('.interactive-card details').forEach(details => {
+                    details.addEventListener('toggle', () => {
+                        const content = details.closest('.collapsible-content');
+                        if (content && content.style.maxHeight && content.style.maxHeight !== '0px') {
+                            content.style.maxHeight = content.scrollHeight + 'px';
+                        }
+                    });
+                });
+
+                const itemModal = document.getElementById('item-modal');
+                const closeModalBtn = itemModal.querySelector('#close-modal-btn');
+                const itemIframe = document.getElementById('item-iframe');
+                
+                function openModal(srcId, srcType = 'drive') {
+                    let embedUrl = srcType === 'youtube' ? `https://www.youtube.com/embed/${srcId.split('?')[0]}?start=${new URLSearchParams(srcId.split('?')[1] || '').get('t') || 0}` : `https://drive.google.com/file/d/${srcId}/preview`;
+                    itemIframe.src = embedUrl;
+                    itemModal.classList.remove('hidden');
+                }
+
+                function closeModal() {
+                    itemIframe.src = ''; 
+                    itemModal.classList.add('hidden');
+                }
+
+                const checklistModal = document.getElementById('checklist-modal');
+                const closeChecklistBtn = checklistModal.querySelector('#close-checklist-btn');
+                const checklistContent = document.getElementById('checklist-content');
+                const checklistTitle = document.getElementById('checklist-title');
+
+                const checklists = {
+                    a52: `<h4 class="font-bold mb-2">Merhaba!</h4><p class="mb-4">Ekipmanın ilk kalibrasyonu için lütfen aşağıdaki adımları izleyin:</p><ul class="space-y-3"><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Makinenin çalışma istasyonundaki genel bir fotoğrafını çekin.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Makineyi açın ve şunların fotoğraflarını çekin: hava basınç paneli (sağda) ve seri numarası plakası.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Kalibrasyon için bir kumpasa ihtiyacınız olacak. Kitten çıkan standart 2 mm'lik takımın şaft çapını ölçün ve değerlerin göründüğü bir fotoğraf çekin.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>2 mm'lik takımı magazin içindeki ilk yuvaya (A52W ve A52DW için 4), keskin ucu aşağı gelecek şekilde yerleştirin.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>12 mm'lik bir mum disk takın.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Makine üzerinde "Start" düğmesine basın. Kalibrasyon dosyası seçili değilse, "File" düğmesine basın ve manuel olarak seçin.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Mum küpler kesildikten sonra: Makine ekranındaki "Kalibrasyon" düğmesine basın. Hangi boyutların ölçüleceğini belirten bir komut belirecektir. Ölçümleri yapın ve her birinin fotoğrafını çekin.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Sonuçları onaylamadan önce fotoğrafları WhatsApp üzerinden gönderin. Biz kontrol edip ekipmanın düzgün çalıştığını onaylayacağız.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Tamamlandıktan sonra: Takımı çıkarın, kutusuna geri koyun ve üzerine "kalibrasyon" yazın. Sadece gelecekteki kalibrasyonlar için kullanın.</span></label></li></ul>`,
+                    b52: `<h4 class="font-bold mb-2">Merhaba!</h4><p class="mb-4">Ekipmanın ilk kalibrasyonu için lütfen aşağıdaki adımları izleyin:</p><ul class="space-y-3"><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Makinenin çalışma istasyonundaki genel bir fotoğrafını çekin.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Makineyi açın ve hava basınç paneli ile seri numarası plakasının fotoğraflarını çekin.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Standart 2 mm'lik takımın şaft çapını ölçün ve bir fotoğraf çekin.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>2 mm'lik takımı magazindeki ikinci yuvaya yerleştirin.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>12 mm'lik bir mum disk takın.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>"Start"a basın, ölçümleri yapın ve fotoğrafları WhatsApp üzerinden gönderin.</span></label></li></ul>`
+                };
+                
+                function openChecklistModal(machine) {
+                    checklistTitle.textContent = `${machine.toUpperCase()} Lansman Kontrol Listesi`;
+                    checklistContent.innerHTML = checklists[machine];
+                    checklistModal.classList.remove('hidden');
+                }
+                
+                function closeChecklistModal() {
+                    checklistModal.classList.add('hidden');
+                }
+
+                closeModalBtn.addEventListener('click', closeModal);
+                closeChecklistBtn.addEventListener('click', closeChecklistModal);
+                
+                document.querySelectorAll('.item-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openModal(link.dataset.srcId, link.dataset.srcType || 'drive');
+                    });
+                });
+
+                document.querySelectorAll('.launch-checklist-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openChecklistModal(btn.dataset.machine);
+                    });
+                });
+                
+                [itemModal, checklistModal].forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal === itemModal ? closeModal() : closeChecklistModal();
+                        }
+                    });
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === "Escape") {
+                        if (!itemModal.classList.contains('hidden')) closeModal();
+                        if (!checklistModal.classList.contains('hidden')) closeChecklistModal();
+                    }
+                });
+            }
+            
+            setupEventListeners();
+        });
+    </script>
+</body>
+</html>

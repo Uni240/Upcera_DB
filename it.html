@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base di Conoscenza Interattiva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .nav-link.active { background-color: #3b82f6; color: white; }
+        .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; }
+        .material-accordion details > summary { list-style: none; cursor: pointer; padding: 1rem; background-color: #f3f4f6; border-radius: 0.5rem; font-weight: 600; transition: background-color 0.2s ease; }
+        .material-accordion details > summary:hover { background-color: #e5e7eb; }
+        .material-accordion details[open] > summary { background-color: #dbeafe; color: #1d4ed8; }
+        .material-accordion details .content { padding: 1rem; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 0.5rem 0.5rem; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div id="password-modal" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-sm text-center">
+            <h2 class="text-2xl font-bold mb-4">Accesso Richiesto</h2>
+            <p class="text-gray-600 mb-6">Inserire la password per accedere.</p>
+            <form id="password-form">
+                <input type="password" id="password-input" class="w-full px-4 py-2 border rounded-lg mb-4" placeholder="Password">
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Accedi</button>
+            </form>
+            <p id="error-message" class="text-red-500 mt-4 h-4"></p>
+        </div>
+    </div>
+
+    <div id="main-content" class="hidden">
+        <div class="container mx-auto p-4 md:p-8">
+            <header class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold">Base di Conoscenza</h1>
+                <p class="text-md text-gray-600 mt-2">Tutte le informazioni su attrezzature, materiali e software</p>
+            </header>
+
+            <div class="flex flex-col md:flex-row gap-8">
+                <nav id="navigation" class="w-full md:w-1/4 bg-white p-6 rounded-lg shadow-md self-start">
+                    <h2 class="font-bold text-xl mb-4 border-b pb-2">Sezioni</h2>
+                    <ul class="space-y-2">
+                        <li><a href="#stanki" class="nav-link block p-3 rounded-lg hover:bg-gray-200">1. Macchine</a></li>
+                        <li><a href="#materialy" class="nav-link block p-3 rounded-lg hover:bg-gray-200">2. Materiali</a></li>
+                        <li><a href="#hyperdent" class="nav-link block p-3 rounded-lg hover:bg-gray-200">3. Software Hyperdent</a></li>
+                        <li><a href="#millbox" class="nav-link block p-3 rounded-lg hover:bg-gray-200">4. Software Millbox</a></li>
+                        <li><a href="#pechi" class="nav-link block p-3 rounded-lg hover:bg-gray-200">5. Forni</a></li>
+                        <li><hr class="my-2"></li>
+                        <li><div data-src-id="16WVDxfE5f5nl9NutKr4qr109UEJOIVHE" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-green-700 hover:bg-green-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" /></svg>
+                            <span>Catalogo Prodotti</span>
+                        </div></li>
+                    </ul>
+                </nav>
+
+                <main class="w-full md:w-3/4 bg-white p-8 rounded-lg shadow-md">
+                    <section id="welcome" class="content-section active">
+                        <h2 class="text-2xl font-bold mb-4">Benvenuto!</h2>
+                        <p>Seleziona una sezione dal menu a sinistra per visualizzare le informazioni.</p>
+                        <div class="mt-6 p-4 bg-blue-50 border-l-4 border-blue-500 text-blue-800 rounded-r-lg">
+                            <p class="font-semibold">Come funziona?</p>
+                            <p class="mt-2">Questa base di conoscenza è il tuo assistente interattivo. Seleziona una sezione dal menu per trovare le informazioni necessarie. La aggiorniamo costantemente per offrirti un supporto qualificato senza inutili complicazioni e per farti familiarizzare con la soluzione ancora prima di riscontrare un problema.</p>
+                        </div>
+                    </section>
+                    
+                    <section id="stanki" class="content-section">
+                        <h2 class="text-2xl font-bold mb-6 border-b pb-3">1. Macchine</h2>
+
+                        <div class="p-4 mb-6 bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 rounded-r-lg" role="alert">
+                            <h3 class="text-xl font-bold">Obblighi di Garanzia</h3>
+                            <p class="mt-2">La garanzia è fornita a condizione che vengano rispettate le norme operative, come l'assenza di umidità nel sistema pneumatico della macchina e un'alimentazione elettrica stabile. Per questo, il laboratorio deve essere dotato di uno stabilizzatore di tensione e di un essiccatore d'aria. Gli obblighi di garanzia non coprono i guasti causati da un uso improprio o dalle azioni dell'utente.</p>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-6">Clicca sull'immagine della macchina per espandere l'elenco delle istruzioni.</p>
+                        <div class="flex flex-col md:flex-row gap-8 justify-center">
+                            <div class="interactive-card w-full md:w-1/2">
+                                <figure class="cursor-pointer bg-white p-4 rounded-lg shadow-md hover:shadow-xl">
+                                    <img src="https://lh3.googleusercontent.com/d/1VsfU9Fhc64gYKahbu7T03RXF-xkwXTD8" alt="Macchina A52" class="w-full h-auto object-contain rounded-md mx-auto" style="max-height: 300px;">
+                                    <figcaption class="text-center font-bold text-lg mt-4">Serie A52</figcaption>
+                                </figure>
+                                <div class="collapsible-content mt-2">
+                                    <div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
+                                        <div data-src-id="1ev2bTxKaWmTBZRko3NsVqMYObaulqyF4" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Montaggio (Video)</div>
+                                        <div class="launch-checklist-btn cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100" data-machine="a52">Avvio</div>
+                                        <div data-src-id="1kNZyyCDw8w5txSl14h6dP4dAIffH1Qe8" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Calibrazione (Video)</div>
+                                        <div data-src-id="1nM0ibR6NRNVfrdVo63LlBMIbmcqgggof" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Uso del calibro</div>
+                                        <div data-src-type="youtube" data-src-id="mUQ06kAM12o?t=85" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Miscelazione refrigerante</div>
+                                        <div data-src-type="youtube" data-src-id="NeUaZUK2GMY" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Manutenzione (YouTube)</div>
+                                        <details class="group"><summary class="list-none p-2 rounded-md font-semibold text-gray-800 bg-gray-100 hover:bg-gray-200 cursor-pointer">Documenti</summary><div class="p-3 mt-1 text-sm border border-gray-200 rounded-b-md bg-white space-y-2"><div data-src-id="1Y20XzIpwZj2Vf3wjBaeJytVTB3SjHg1T" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Promemoria</div></div></details>
+                                        <details class="group"><summary class="list-none p-2 rounded-md font-semibold text-red-800 bg-red-100 hover:bg-red-200 cursor-pointer">Errori</summary><div class="p-3 mt-1 text-sm border border-red-200 rounded-b-md bg-white space-y-2"><div data-src-id="1644UY76y0anYCZ5vE92bm6R_ODxB3l33" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">1. Sostituzione e reset utensile</div><div data-src-id="1QwmBMhdC5ingw8BxyvCYXRggzcJCOsee" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">2. Installazione utensile senza anello di arresto</div><div data-src-id="1yEFI9A3kNXwwVRjO_53QNxTEtxnKp21o" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">3. Abilitazione "Vita utensile"</div><div data-src-id="14G4jXnqH1RyaC6AysY3t13ZaK8r2PM1Y" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">4. Spazio su disco esaurito</div></div></details>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="interactive-card w-full md:w-1/2">
+                                <figure class="cursor-pointer bg-white p-4 rounded-lg shadow-md hover:shadow-xl">
+                                    <img src="https://lh3.googleusercontent.com/d/1m5tO61RB0JpeqkerWFktkc4ACrKmTrc7" alt="Macchina B52" class="w-full h-auto object-contain rounded-md mx-auto" style="max-height: 300px;">
+                                    <figcaption class="text-center font-bold text-lg mt-4">Serie B52</figcaption>
+                                </figure>
+                                <div class="collapsible-content mt-2">
+                                    <div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
+                                        <div data-src-id="1Rvhov1JrpvxFAzQEbSQ2cuz-XRaGDLgv" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Montaggio (Video)</div>
+                                        <div class="launch-checklist-btn cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100" data-machine="b52">Avvio</div>
+                                        <div data-src-id="1kNZyyCDw8w5txSl14h6dP4dAIffH1Qe8" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Calibrazione (Video)</div>
+                                        <div data-src-id="1nM0ibR6NVfrdVo63LlBMIbmcqgggof" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Uso del calibro</div>
+                                        <div data-src-id="12qqR-ipVL1Xg6wyCe9_kZC89BnOMFDGj" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Manutenzione (YouTube)</div>
+                                        <details class="group"><summary class="list-none p-2 rounded-md font-semibold text-gray-800 bg-gray-100 hover:bg-gray-200 cursor-pointer">Documenti</summary><div class="p-3 mt-1 text-sm border border-gray-200 rounded-b-md bg-white space-y-2"><div data-src-id="101SWMXBhv-hS2AVRH_pqVvT4aQZR9ZFk" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Manuale dell'operatore</div></div></details>
+                                        <details class="group"><summary class="list-none p-2 rounded-md font-semibold text-red-800 bg-red-100 hover:bg-red-200 cursor-pointer">Errori</summary><div class="p-3 mt-1 text-sm border border-red-200 rounded-b-md bg-white space-y-2"><div data-src-id="1644UY76y0anYCZ5vE92bm6R_ODxB3l33" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">1. Sostituzione e reset utensile</div><div data-src-id="1yEFI9A3kNXwwVRjO_53QNxTEtxnKp21o" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">2. Abilitazione "Vita utensile"</div><div data-src-id="14G4jXnqH1RyaC6AysY3t13ZaK8r2PM1Y" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">3. Spazio su disco esaurito</div></div></details>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section id="materialy" class="content-section">
+                        <h2 class="text-2xl font-bold mb-6 border-b pb-3">2. Materiali</h2>
+                        <div class="space-y-8 material-accordion">
+                            <div>
+                                <h3 class="text-xl font-semibold mb-3">2.1. Zirconia</h3>
+                                <div class="space-y-2">
+                                    <details><summary>DUO</summary><div class="content space-y-3"><h4>Proprietà:</h4><ul class="list-disc list-inside bg-gray-50 p-3 rounded"><li><strong>Traslucenza:</strong> 45% - 48%</li><li><strong>Resistenza alla flessione:</strong> 850 - 1200 MPa</li><li><strong>Densità dopo sinterizzazione:</strong> ≥6.0 g/cm³</li><li><strong>CET (25-500°C):</strong> (10.5±0.5)×10<sup>-6</sup> K<sup>-1</sup></li><li><strong>Temperatura di sinterizzazione:</strong> 1480°C</li></ul><h4>Programma di sinterizzazione (Standard, fino a 7 elementi):</h4><ol class="list-decimal list-inside space-y-1"><li><b>Step 1:</b> Riscaldamento a 1000°C a 17°C/min.</li><li><b>Step 2:</b> Riscaldamento a 1300°C a 10°C/min.</li><li><b>Step 3:</b> Riscaldamento a 1515°C a 7°C/min.</li><li><b>Step 4:</b> Mantenimento a 1515°C per 90 minuti.</li><li><b>Step 5:</b> Raffreddamento a 800°C a 8°C/min.</li><li><b>Step 6:</b> Raffreddamento naturale.</li></ol><h4>Programma di sinterizzazione (Ponti lunghi, >7 elementi):</h4><ol class="list-decimal list-inside space-y-1"><li><b>Step 1:</b> Riscaldamento a 1300°C a 4°C/min.</li><li><b>Step 2:</b> Riscaldamento a 1515°C a 2°C/min.</li><li><b>Step 3:</b> Mantenimento a 1515°C per 120 minuti.</li><li><b>Step 4:</b> Raffreddamento a 800°C a 4°C/min.</li><li><b>Step 5:</b> Raffreddamento naturale.</li></ol></div></details>
+                                    <details><summary>HT White</summary><div class="content space-y-3"><h4>Proprietà:</h4><ul class="list-disc list-inside bg-gray-50 p-3 rounded"><li><strong>Traslucenza:</strong> 39%</li><li><strong>Resistenza alla flessione:</strong> 1300 MPa</li><li><strong>Temperatura di sinterizzazione:</strong> 1530°C</li></ul><h4>Programma di sinterizzazione:</h4><ol class="list-decimal list-inside space-y-1"><li><b>Step 1:</b> Riscaldamento a 500°C a 3°C/min.</li><li><b>Step 2:</b> Riscaldamento a 1150°C a 8°C/min.</li><li><b>Step 3:</b> Mantenimento a 1150°C per 30 minuti.</li><li><b>Step 4:</b> Riscaldamento a 1300°C a 2°C/min.</li><li><b>Step 5:</b> Riscaldamento a 1530°C a 4°C/min.</li><li><b>Step 6:</b> Mantenimento a 1530°C per 120 minuti.</li><li><b>Step 7:</b> Raffreddamento a 800°C a 8°C/min, poi raffreddamento naturale.</li></ol></div></details>
+                                    <details><summary>Serie ST (White, Pre-shaded, Multilayer)</summary><div class="content space-y-3"><h4>Proprietà:</h4><ul class="list-disc list-inside bg-gray-50 p-3 rounded"><li><strong>Traslucenza:</strong> 43%</li><li><strong>Resistenza alla flessione:</strong> 1300 MPa</li><li><strong>Temperatura di sinterizzazione:</strong> 1530°C</li></ul><h4>Programma di sinterizzazione (Standard):</h4><p>Uguale a HT White (temperatura di picco 1530°C).</p><h4>Programma di sinterizzazione (Rapido, 4 ore):</h4><ol class="list-decimal list-inside space-y-1"><li><b>Step 1:</b> Riscaldamento a 1150°C a 40°C/min.</li><li><b>Step 2:</b> Mantenimento a 1150°C per 10 minuti.</li><li><b>Step 3:</b> Riscaldamento a 1550°C a 10°C/min.</li><li><b>Step 4:</b> Mantenimento a 1550°C per 120 minuti.</li><li><b>Step 5:</b> Raffreddamento a 800°C a 40°C/min.</li></ol><h4>Programma di sinterizzazione (Rapido, 2 ore):</h4><ol class="list-decimal list-inside space-y-1"><li><b>Step 1:</b> Riscaldamento a 1150°C a 50°C/min.</li><li><b>Step 2:</b> Riscaldamento a 1550°C a 8°C/min.</li><li><b>Step 3:</b> Mantenimento a 1550°C per 30 minuti.</li><li><b>Step 4:</b> Raffreddamento a 800°C a 50°C/min.</li></ol></div></details>
+                                    <details><summary>Serie TT-ONE (White, Pre-shaded, Multilayer)</summary><div class="content space-y-3"><h4>Proprietà:</h4><ul class="list-disc list-inside bg-gray-50 p-3 rounded"><li><strong>Traslucenza:</strong> 47%</li><li><strong>Resistenza alla flessione:</strong> 1000 MPa</li><li><strong>Temperatura di sinterizzazione:</strong> 1480°C (White/Pre-shaded), 1450°C (Multilayer)</li></ul><h4>Programma di sinterizzazione (Standard):</h4><ol class="list-decimal list-inside space-y-1"><li><b>Step 1:</b> Riscaldamento a 1150°C (in più fasi).</li><li><b>Step 2:</b> Mantenimento a 1150°C per 30 minuti.</li><li><b>Step 3:</b> Riscaldamento a 1480°C (o 1450°C) a 2-4°C/min.</li><li><b>Step 4:</b> Mantenimento alla temperatura di picco per 120 minuti.</li><li><b>Step 5:</b> Raffreddamento a 800°C a 8°C/min.</li></ol></div></details>
+                                    <details><summary>Serie TT (White, Multilayer)</summary><div class="content space-y-3"><h4>Proprietà:</h4><ul class="list-disc list-inside bg-gray-50 p-3 rounded"><li><strong>Traslucenza:</strong> 49%</li><li><strong>Resistenza alla flessione:</strong> 600 MPa</li><li><strong>Temperatura di sinterizzazione:</strong> 1450°C</li></ul><h4>Programma di sinterizzazione (Standard):</h4><p>Uguale a TT-ONE Multilayer (temperatura di picco 1450°C).</p></div></details>
+                                    <details><summary>Serie Explore (Functional, Esthetic, Hybrid)</summary><div class="content space-y-3"><h4>Proprietà:</h4><ul class="list-disc list-inside bg-gray-50 p-3 rounded"><li><strong>Traslucenza:</strong> 43% - 48.8% (a seconda del tipo)</li><li><strong>Resistenza alla flessione:</strong> 727 - 1300 MPa (gradiente)</li><li><strong>Temperatura di sinterizzazione:</strong> 1480°C</li></ul><h4>Programma di sinterizzazione (Standard):</h4><p>Uguale a TT-ONE (temperatura di picco 1480°C), ma il tempo di mantenimento per Hybrid è di 180 minuti.</p></div></details>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-3">2.2. Vetroceramica Upcera-CAD</h3>
+                                <details><summary>Proprietà e Programmi di Cottura</summary><div class="content space-y-4"><p><a href="https://drive.google.com/file/d/1ebX46bUccv3q-C7_5rR0acr-TQ3EulVr/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline">Apri le istruzioni per l'uso &rarr;</a></p><div><h4>Proprietà:</h4><ul class="list-disc list-inside mt-2 bg-gray-50 p-3 rounded"><li><strong>Resistenza alla flessione:</strong> >400 MPa</li><li><strong>CET (25-500°C):</strong> (10.5±0.5) x10<sup>-6</sup>K<sup>-1</sup></li><li><strong>Solubilità chimica:</strong> &lt;100 µg/cm²</li><li><strong>Temperatura di cristallizzazione:</strong> 840-850°C</li></ul></div><div><h4>Programmi di cottura:</h4><div class="overflow-x-auto mt-2"><table class="min-w-full text-sm text-left bg-white border rounded"><thead class="bg-gray-100"><tr><th class="p-2 border-b">Programma</th><th class="p-2 border-b">Inizio (°C)</th><th class="p-2 border-b">Asciugatura (mm:ss)</th><th class="p-2 border-b">Rate (°C/min)</th><th class="p-2 border-b">Mantenimento (°C)</th><th class="p-2 border-b">Tempo (min)</th></tr></thead><tbody><tr class="border-b"><td class="p-2 font-medium">Cristallizzazione (1 step)</td><td>400</td><td>00:30</td><td>40</td><td>840</td><td>07:00</td></tr><tr class="border-b"><td class="p-2 font-medium">Cristallizzazione (2 step)</td><td>400</td><td>06:00</td><td>90 / 30</td><td>820 / 840</td><td>00:10 / 7:00</td></tr><tr class="border-b"><td class="p-2 font-medium">Glasura</td><td>400</td><td>00:30</td><td>40</td><td>840</td><td>03:00</td></tr></tbody></table></div></div></div></details>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="hyperdent" class="content-section">
+                         <h2 class="text-2xl font-bold mb-6 border-b pb-3">3. Software Hyperdent</h2>
+                         <p class="mb-4 text-gray-600">Clicca su un'istruzione per aprire il video in un pop-up.</p>
+                         <div class="space-y-2">
+                            <div data-src-id="16tHHAsoqDNJIpTlFzVeP5w88Oz4K6Axd" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>1. Creazione del grezzo e della geometria</span></div>
+                            <div data-src-id="15L_I4rVpY8ESIMZTwk5RrEh_iH1PvGca" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>2. Caricamento del lavoro nel disco, creazione del disco</span></div>
+                            <div data-src-id="1Ga3BbLAJvIJT8um_-VpLodvCRamEyBHq" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>3. Marcatura del canale della vite, assegnazione di una categoria</span></div>
+                            <div data-src-id="1SEY-uxAJkwFp3ePUgpdtzXqHs3MZRZOL" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>4. Caricamento di un abutment pre-fresato</span></div>
+                            <div class="p-3"><span class="flex items-center text-gray-800"><svg class="h-5 w-5 mr-3 text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" /><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" /></svg><span>5. Compensazione di fresatura</span></span><div class="mt-2 pl-8 space-y-2"><div data-src-id="1S5Wig357OgZGFFjMRlU_U891UewNeo8W" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>5.1 Opzione 1</span></div><div data-src-id="1nj8LsccpSh1TD85KVminqNDRUz5EXF29" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>5.2 Opzione 2</span></div></div></div>
+                            <div data-src-id="1BUAy8DstBi8VsY92jLXvpLzYFTXsBTS0" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>6. Marcatura del blocco, telescopica</span></div>
+                            <div data-src-id="1n5LBZJSoe4iXiYx6qwuShqhUOB7iRvxg" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg><span>7. Creazione di un file di lavoro incompleto (per finitura)</span></div>
+                         </div>
+                    </section>
+                    
+                    <section id="millbox" class="content-section">
+                         <h2 class="text-2xl font-bold mb-6 border-b pb-3">4. Software Millbox</h2>
+                         <p class="mb-4 text-gray-600">Clicca su un'istruzione per aprire il video in un pop-up.</p>
+                         <div class="space-y-2">
+                             <div data-src-id="1UoBp6qQRLlQ1ZhDVhIf2XgwPAL274w0F" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 1. Video di base</div>
+                             <div data-src-id="1NIIi0dCYWO3duBwmlMI0Jg5YCRba04Jh" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 2. Posizionamento di un'arcata completa in zirconia</div>
+                             <div data-src-id="1fE2uvU67ZHyfsCjduvRWKRZsqykDq-Fd" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 3. Lavorazione a 90 gradi</div>
+                             <div data-src-id="1aWWuXnTx5eApb8A-Y5V4T9VgqFzrKDir" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 4. Regolazione del margine di restauro</div>
+                             <div data-src-id="1bJLEDgKjeI6zJUjtBKhquga_U1lprtbx" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 5. Ridefinizione delle curve del canale della vite</div>
+                             <div data-src-id="1ekgVM1Soh66uAWJuNZ8potS4CGDXbA3G" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 6. Salvataggio compensazioni di fresatura permanenti</div>
+                             <div data-src-id="18yoUwS_5LRhLMT7J3Zn_K2FK-1TqpDjN" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 7. Posizionamento di vetroceramica</div>
+                             <div data-src-id="19FyzM3P9hhAthbw65NYCvjJ1072tyBr5" class="item-link cursor-pointer flex items-center p-3 rounded-lg text-blue-700 hover:bg-blue-100"><svg class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg> 8. Posizionamento abutment pre-fresato e creazione del grezzo</div>
+                         </div>
+                    </section>
+
+                    <section id="pechi" class="content-section">
+                        <h2 class="text-2xl font-bold mb-6 border-b pb-3">5. Forni</h2>
+                        <p class="text-gray-600 mb-6">Clicca sull'immagine del forno per espandere l'elenco delle istruzioni.</p>
+                        <div class="flex flex-col md:flex-row gap-8 justify-center">
+                            <div class="interactive-card w-full md:w-1/2">
+                                <figure class="cursor-pointer bg-white p-4 rounded-lg shadow-md hover:shadow-xl"><img src="https://lh3.googleusercontent.com/d/1qfWtD-qsesj2jBYoQebFPjhosFxHmLQf" alt="Forno GT1" class="w-full h-auto object-contain rounded-md mx-auto" style="max-height: 300px;"><figcaption class="text-center font-bold text-lg mt-4">Forno di sinterizzazione GT1</figcaption></figure>
+                                <div class="collapsible-content mt-2"><div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
+                                    <div data-src-id="1b6_0ETvti_Ez5OoOOotbL-wp_W1RASGs" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Montaggio</div>
+                                    <div data-src-id="1LG3JasxWjASA1R530slC_pb4S2oVirxb" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Utilizzo</div>
+                                    <div data-src-id="1-ysu88OutsoKGPM4Yrblj69tdBfgRP8h" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Inserimento Programma</div>
+                                    <details class="group"><summary class="list-none p-2 rounded-md font-semibold text-green-800 bg-green-100 hover:bg-green-200 cursor-pointer">Consigli</summary><div class="p-3 mt-1 text-sm border border-green-200 rounded-b-md bg-white">Per un funzionamento stabile del forno, è necessaria una tensione con onda sinusoidale pura senza sbalzi — raccomandiamo l'uso di un UPS e di uno stabilizzatore. Prima dell'accensione, assicurarsi che la stanza sia asciutta e pulita. Se il forno non è stato utilizzato per più di 24 ore, è obbligatorio un ciclo di asciugatura — 200°C per 1 ora, altrimenti sono possibili crepe nella ceramica o degradazione degli elementi riscaldanti.<br><br>Pulire la camera almeno una volta alla settimana — usare polvere detergente speciale o caricare pezzi di zirconia non lavorati per assorbire i contaminanti.<br><br>Qualsiasi zirconia richiede l'asciugatura sotto una lampada IR per almeno 20 minuti prima della sinterizzazione, specialmente se colorata. L'umidità causa microfessure e difetti strutturali.<br><br>Non utilizzare asciugacapelli domestici o forni per asciugare la zirconia. Usare solo una lampada IR con calore diffuso, a una distanza non inferiore a 20 cm.<br><br>Dopo ogni ciclo di sinterizzazione, lasciare raffreddare il forno fino a &lt;100°C con la porta chiusa. L'apertura di una camera calda può alterare il profilo di temperatura e deformare il prodotto.<br><br>Eseguire un ciclo di calibrazione secondo le istruzioni del produttore ogni 2–3 mesi. Questo aiuta a mantenere l'uniformità del riscaldamento e la precisione della sinterizzazione.</div></details>
+                                    <a href="#" class="block p-2 rounded-md text-red-600 font-semibold hover:bg-red-100">Errori</a>
+                                    <div data-src-id="1UJc4rXHUmcJiTkKqJ9FLStfyGBOuCvbo" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Documenti</div>
+                                </div></div>
+                            </div>
+                            <div class="interactive-card w-full md:w-1/2">
+                                <figure class="cursor-pointer bg-white p-4 rounded-lg shadow-md hover:shadow-xl"><img src="https://lh3.googleusercontent.com/d/1kfvuD8TQXHzshAukuVIruSOmmEJGsCjT" alt="Forno A7+" class="w-full h-auto object-contain rounded-md mx-auto" style="max-height: 300px;"><figcaption class="text-center font-bold text-lg mt-4">Forno per ceramica A7+</figcaption></figure>
+                                <div class="collapsible-content mt-2"><div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
+                                    <details class="group"><summary class="list-none p-2 rounded-md text-blue-700 hover:bg-blue-100 cursor-pointer">Inserimento Programma</summary><div class="p-3 mt-1 text-sm border border-blue-200 rounded-b-md bg-white space-y-1"><p><strong>P</strong> - numero del programma</p><p><strong>B</strong> - Temperatura iniziale</p><p><strong>S1</strong> - velocità di chiusura porta in minuti</p><p><strong>T1</strong> - temperatura target</p><p><strong>t1</strong> - velocità di riscaldamento (gradi/minuto)</p><p><strong>H1</strong> - tempo di mantenimento</p><p><strong>t2</strong> - velocità di riscaldamento (gradi/minuto)</p><p><strong>T2</strong> - temperatura target</p><p><strong>H2</strong> - tempo di mantenimento</p><p><strong>V</strong> - temperatura di avvio vuoto</p><p><strong>VP</strong> - livello di vuoto nella camera</p><p><strong>VH</strong> - attiva/disattiva vuoto</p><p><strong>LS</strong> - temperatura a porta socchiusa</p><p><strong>S2</strong> - apertura della porta del forno</p></div></details>
+                                    <a href="#" class="block p-2 rounded-md text-red-600 font-semibold hover:bg-red-100">Errori</a>
+                                    <div data-src-id="1Z-3qobNlk_toWFITQIjNNf_oEWeqq1X6" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Documenti</div>
+                                </div></div>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+            <footer class="text-center text-sm text-gray-500 mt-8 py-4 border-t">
+                © 2025 Upcera. Tutti i diritti riservati. Versione Base di Conoscenza: 1.2 (Aggiornato: 30.10.2025)
+            </footer>
+        </div>
+    </div>
+    
+    <div id="checklist-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"><div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto"><div class="flex justify-between items-center p-4 border-b"><h3 id="checklist-title" class="text-xl font-bold">Checklist di Avvio</h3><button id="close-checklist-btn" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button></div><div id="checklist-content" class="p-6 text-left"></div></div></div>
+    <div id="item-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"><div class="bg-white rounded-lg w-[90vw] max-w-7xl h-auto overflow-hidden"><div class="flex justify-end p-2"><button id="close-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button></div><div class="p-2 md:p-5 pt-0"><div class="w-full aspect-video"><iframe id="item-iframe" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div></div></div></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordModal = document.getElementById('password-modal');
+            const mainContent = document.getElementById('main-content');
+            const passwordForm = document.getElementById('password-form');
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error-message');
+            const correctPassword = '201212';
+
+            passwordForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (passwordInput.value === correctPassword) {
+                    passwordModal.classList.add('hidden');
+                    mainContent.classList.remove('hidden');
+                } else {
+                    errorMessage.textContent = 'Password errata';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                    setTimeout(() => { errorMessage.textContent = ''; }, 2000);
+                }
+            });
+
+            function setupEventListeners() {
+                const navLinks = document.querySelectorAll('.nav-link');
+                const sections = document.querySelectorAll('.content-section');
+
+                function showSection(hash) {
+                    if (!hash) hash = '#welcome';
+                    let activeSectionFound = false;
+                    sections.forEach(section => {
+                        const isActive = '#' + section.id === hash;
+                        section.classList.toggle('active', isActive);
+                        if (isActive) activeSectionFound = true;
+                    });
+                    if (!activeSectionFound) {
+                        document.getElementById('welcome').classList.add('active');
+                        hash = '#welcome';
+                    }
+                    navLinks.forEach(navLink => {
+                        navLink.classList.toggle('active', navLink.getAttribute('href') === hash);
+                    });
+                }
+
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        window.location.hash = this.getAttribute('href');
+                    });
+                });
+                window.addEventListener('hashchange', () => showSection(window.location.hash));
+                showSection(window.location.hash);
+
+                document.querySelectorAll('.interactive-card figure').forEach(trigger => {
+                    trigger.addEventListener('click', () => {
+                        const content = trigger.nextElementSibling;
+                        const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+                        const parentSection = trigger.closest('.content-section');
+                        parentSection.querySelectorAll('.interactive-card .collapsible-content').forEach(item => {
+                           if (item !== content) item.style.maxHeight = null;
+                        });
+                        content.style.maxHeight = isExpanded ? null : content.scrollHeight + 'px';
+                    });
+                });
+
+                document.querySelectorAll('.interactive-card details').forEach(details => {
+                    details.addEventListener('toggle', () => {
+                        const content = details.closest('.collapsible-content');
+                        if (content && content.style.maxHeight && content.style.maxHeight !== '0px') {
+                            content.style.maxHeight = content.scrollHeight + 'px';
+                        }
+                    });
+                });
+
+                const itemModal = document.getElementById('item-modal');
+                const closeModalBtn = itemModal.querySelector('#close-modal-btn');
+                const itemIframe = document.getElementById('item-iframe');
+                
+                function openModal(srcId, srcType = 'drive') {
+                    let embedUrl = srcType === 'youtube' ? `https://www.youtube.com/embed/${srcId.split('?')[0]}?start=${new URLSearchParams(srcId.split('?')[1] || '').get('t') || 0}` : `https://drive.google.com/file/d/${srcId}/preview`;
+                    itemIframe.src = embedUrl;
+                    itemModal.classList.remove('hidden');
+                }
+
+                function closeModal() {
+                    itemIframe.src = ''; 
+                    itemModal.classList.add('hidden');
+                }
+
+                const checklistModal = document.getElementById('checklist-modal');
+                const closeChecklistBtn = checklistModal.querySelector('#close-checklist-btn');
+                const checklistContent = document.getElementById('checklist-content');
+                const checklistTitle = document.getElementById('checklist-title');
+
+                const checklists = {
+                    a52: `<h4 class="font-bold mb-2">Buongiorno!</h4><p class="mb-4">Seguire questi passaggi per la calibrazione iniziale dell'apparecchiatura:</p><ul class="space-y-3"><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Scatta una foto generale della macchina nella sua postazione di lavoro.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Accendi la macchina e scatta foto di: pannello pressione aria (a destra) e targhetta numero di serie.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Avrai bisogno di un calibro per la calibrazione. Misura il diametro del gambo dell'utensile standard da 2 mm del kit e scatta una foto della misurazione mostrando i valori.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Installa l'utensile da 2 mm nel primo slot del magazzino (4 per A52W e A52DW), tagliente rivolto verso il basso.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Installa un disco di cera da 12 mm.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Sulla macchina, premi "Start". Se il file di calibrazione non è selezionato, premi il pulsante "File" e selezionalo manualmente.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Dopo il taglio dei cubetti di cera: premi il pulsante "Calibration" sullo schermo della macchina. Apparirà un messaggio che indica quali dimensioni misurare. Scatta foto di ogni misurazione.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Prima di confermare i risultati, invia le foto tramite WhatsApp. Le controlleremo e confermeremo che l'attrezzatura funzioni correttamente.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Al termine: rimuovi l'utensile, riponilo nella sua scatola e nominalo come "calibrazione". Usalo solo per calibrazioni future.</span></label></li></ul>`,
+                    b52: `<h4 class="font-bold mb-2">Buongiorno!</h4><p class="mb-4">Seguire questi passaggi per la calibrazione iniziale dell'apparecchiatura:</p><ul class="space-y-3"><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Scatta una foto generale della macchina nella sua postazione di lavoro.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Accendi la macchina e scatta foto di: pannello pressione aria e targhetta numero di serie.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Misura il diametro del gambo dell'utensile standard da 2 mm e scatta una foto.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Installa l'utensile da 2 mm nel secondo slot del magazzino.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Installa un disco di cera da 12 mm.</span></label></li><li><label class="flex items-start cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3 mt-1 shrink-0"><span>Premi "Start", effettua le misurazioni e invia le foto tramite WhatsApp.</span></label></li></ul>`
+                };
+                
+                function openChecklistModal(machine) {
+                    checklistTitle.textContent = `Checklist di Avvio per ${machine.toUpperCase()}`;
+                    checklistContent.innerHTML = checklists[machine];
+                    checklistModal.classList.remove('hidden');
+                }
+                
+                function closeChecklistModal() {
+                    checklistModal.classList.add('hidden');
+                }
+
+                closeModalBtn.addEventListener('click', closeModal);
+                closeChecklistBtn.addEventListener('click', closeChecklistModal);
+                
+                document.querySelectorAll('.item-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openModal(link.dataset.srcId, link.dataset.srcType || 'drive');
+                    });
+                });
+
+                document.querySelectorAll('.launch-checklist-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openChecklistModal(btn.dataset.machine);
+                    });
+                });
+                
+                [itemModal, checklistModal].forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal === itemModal ? closeModal() : closeChecklistModal();
+                        }
+                    });
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === "Escape") {
+                        if (!itemModal.classList.contains('hidden')) closeModal();
+                        if (!checklistModal.classList.contains('hidden')) closeChecklistModal();
+                    }
+                });
+            }
+            
+            setupEventListeners();
+        });
+    </script>
+</body>
+</html>
