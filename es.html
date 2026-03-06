@@ -83,7 +83,7 @@
                                 <div class="collapsible-content mt-2">
                                     <div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
                                         <div data-src-id="1ev2bTxKaWmTBZRko3NsVqMYObaulqyF4" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Montaje (Video)</div>
-                                        <div class="launch-checklist-btn cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100" data-machine="a52">Lanzamiento</div>
+                                        <div class="launch-checklist-btn cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100" data-machine="a52">Instalación</div>
                                         <div data-src-id="1kNZyyCDw8w5txSl14h6dP4dAIffH1Qe8" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Calibración (Video)</div>
                                         <div data-src-id="1nM0ibR6NVfrdVo63LlBMIbmcqgggof" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Uso de un Calibrador</div>
                                         <div data-src-type="youtube" data-src-id="mUQ06kAM12o?t=85" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Mezcla de Refrigerante</div>
@@ -101,7 +101,7 @@
                                 <div class="collapsible-content mt-2">
                                     <div class="p-4 bg-gray-50 rounded-lg space-y-2 border">
                                         <div data-src-id="1Rvhov1JrpvxFAzQEbSQ2cuz-XRaGDLgv" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Montage (Video)</div>
-                                        <div class="launch-checklist-btn cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100" data-machine="b52">Lanzamiento</div>
+                                        <div class="launch-checklist-btn cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100" data-machine="b52">Instalación</div>
                                         <div data-src-id="1kNZyyCDw8w5txSl14h6dP4dAIffH1Qe8" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Calibración (Video)</div>
                                         <div data-src-id="1nM0ibR6NVfrdVo63LlBMIbmcqgggof" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Uso de un Calibrador</div>
                                         <div data-src-id="12qqR-ipVL1Xg6wyCe9_kZC89BnOMFDGj" class="item-link cursor-pointer p-2 rounded-md text-blue-700 hover:bg-blue-100">Mantenimiento (YouTube)</div>
@@ -191,12 +191,12 @@
                 </main>
             </div>
             <footer class="text-center text-sm text-gray-500 mt-8 py-4 border-t">
-                © 2025 Upcera. Todos los derechos reservados. Versión de Base de Conocimientos: 1.2 (Actualizado: 30.10.2025)
+                © 2026 Upcera. Todos los derechos reservados. Versión de Base de Conocimientos: 1.2 (Actualizado: 06.03.2026)
             </footer>
         </div>
     </div>
     
-    <div id="checklist-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"><div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto"><div class="flex justify-between items-center p-4 border-b"><h3 id="checklist-title" class="text-xl font-bold">Lista de Verificación de Lanzamiento</h3><button id="close-checklist-btn" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button></div><div id="checklist-content" class="p-6 text-left"></div></div></div>
+    <div id="checklist-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"><div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto"><div class="flex justify-between items-center p-4 border-b"><h3 id="checklist-title" class="text-xl font-bold">Lista de Verificación de Instalación</h3><button id="close-checklist-btn" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button></div><div id="checklist-content" class="p-6 text-left"></div></div></div>
     <div id="item-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"><div class="bg-white rounded-lg w-[90vw] max-w-7xl h-auto overflow-hidden"><div class="flex justify-end p-2"><button id="close-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button></div><div class="p-2 md:p-5 pt-0"><div class="w-full aspect-video"><iframe id="item-iframe" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div></div></div></div>
 
     <script>
@@ -298,7 +298,7 @@
                 };
                 
                 function openChecklistModal(machine) {
-                    checklistTitle.textContent = `Lista de Verificación de Lanzamiento para ${machine.toUpperCase()}`;
+                    checklistTitle.textContent = `Lista de Verificación de Instalación para ${machine.toUpperCase()}`;
                     checklistContent.innerHTML = checklists[machine];
                     checklistModal.classList.remove('hidden');
                 }
@@ -344,4 +344,5 @@
         });
     </script>
 </body>
+
 </html>
